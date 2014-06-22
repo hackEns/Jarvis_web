@@ -7,9 +7,20 @@
     </head>
     <body>
         <h1>{$title}</h1>
+        {if="!empty($table[0]['title'])"}
+        <h2>{$table[0]['title']}</h2>
+        {/if}
         <table>
             {$header=1}
             {loop="$table"}
+
+            {if="$key != 0 && !empty($value['title'])"}
+        </table>
+        <h2>{$value["title"]}</h2>
+        <table>
+                {$header=1}
+            {/if}
+
             <tr class="{$value['class']}">
                 {loop="$value['content']"}
                     {if="$header == 1"}

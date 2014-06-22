@@ -12,6 +12,18 @@ $tpl = new raintpl();
 
 date_default_timezone_set($GLOBALS["timezone"]);
 
+function scholar_year($date) {
+    /* Returns the scholar year associated with date $date.*/
+    $Y = $date->format('Y');
+    if($date->format('m') > 8) {
+        $year = $Y." / ".($Y - 1);
+    }
+    else {
+        $year = ($Y - 1)." / ".$Y;
+    }
+    return $year;
+}
+
 $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
 $bdd->query("SET NAMES utf8");
 
@@ -20,6 +32,7 @@ switch($_GET['do']) {
         $query = $bdd->query("SELECT id, amount, author, date as date, comment FROM budget ORDER BY date DESC");
         $results = $query->fetchAll();
 
+        $table = array(array("title"=>"", "class"=>"", "content"=>array("Date", "Commentaire", "Ajouté par", "Crédit", "Débit", "Total")));
 
         // Compute total per year
         $total_per_year = array();
@@ -33,11 +46,25 @@ switch($_GET['do']) {
         }
 
         $scholar_year = "";
+        $count = 0;
         foreach($results as $result) {
+            $count++;
             $date = new DateTime($result["date"]);
             $result_scholar_year = scholar_year($date);
             $amount = floatval($result['amount']);
+
+            if($result_scholar_year != $scholar_year) {
+                $total = $total_per_year[$result_scholar_year];
+                $table[$count - 1]["title"] = $result_scholar_year;
+            }
+
+            $table[] = array("title"=> "", "class"=>"", "content"=>array($date->format("d/m/Y"), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : "-"), $total." €"));
+
+            $scholar_year = $result_scholar_year;
+            $total -= $amount;
         }
+        $tpl->assign("title", $GLOBALS["title"]." - Budget");
+        $tpl->assign("table", $table);
         break;
 
     case "courses":
