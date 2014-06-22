@@ -20,3 +20,11 @@ th {
     color: white;
     font-weight: bold;
 }
+
+.disabled {
+    background-color: grey;
+}
+
+.urgent {
+    background-color: red;
+}
