@@ -1,0 +1,7 @@
+<?php
+    $GLOBALS["mysql_host"] = "";
+    $GLOBALS["mysql_db"] = "";
+    $GLOBALS["mysql_login"] = "";
+    $GLOBALS["mysql_pass"] = "";
+    $GLOBALS["title"] = "";
+    $GLOBALS["timezone"] = "Europe/Paris";
