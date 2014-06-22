@@ -1,0 +1,851 @@
+﻿/* CSS Stylesheet for Shaarli - http://sebsauvage.net/wiki/doku.php?id=php:shaarli				*/
+
+/* Thème : AlbinoMouse pour Shaarli par Alexis J (http://liens.effingo.be) 						*/
+/* Directement inspiré de AlbinoMouse pour Wordpress (http://www.pixelstrol.ch/en/wp-themes/albinomouse) 	*/
+/* Version: 20140526												*/
+
+
+@font-face {
+    font-family:"Bitter";
+    src: url('fonts/Bitter-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url('fonts/OpenSans-Regular-webfont.eot') format('opentype');
+    src: url('fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/OpenSans-Regular-webfont.woff') format('woff'),
+         url('fonts/OpenSans-Regular-webfont.ttf') format('truetype'),
+         url('fonts/OpenSans-Regular-webfont.svg#open_Sans-Serifregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.glyphicon, .fa {                              /*AM - le thème utilise font-awesome (http://fortawesome.github.io/) pour les icônes. js chargé via includes.html */
+    color: #777777;
+}
+
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{*font-size:100%;}
+
+body { font-family:OpenSans,Sans-Serif; font-size:10pt; background-color: #ffffff; word-wrap: break-word; }
+input, textarea {
+    background-color: #FBFBFB;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    padding:5px;
+    border-radius: 5px 5px 5px 5px;
+    border: none;
+    color:#000;
+    }
+
+h1 {
+    font-size: 20pt;
+    font-style: italic;
+    margin: 20px;
+}
+/* I don't give a shit about IE. He can't understand selectors such as input[type='submit']. */
+
+main {
+    color: #4C4B4A;
+    margin: 20px auto;                                    /*   AM   */
+    width: 980px!important;
+    line-height: 140%;
+}
+
+main ul {
+    padding-left: 20px;
+}
+
+main li {
+    list-style: disc none inside;
+}
+
+a {
+    color: #116C8E;
+    text-decoration: none;
+}
+
+a:hover {
+    color: black;
+}
+
+code {
+    background-color: #EEE;
+}
+
+.callout-info {
+    margin: 20px 0px;
+    padding: 20px;
+
+    border-left: 3px solid #116C8E;
+    background-color: #F3F6F8;
+}
+
+.callout-info h4 {
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #116C8E;
+}
+
+
+/* Buttons */
+.bigbutton {
+    cursor: pointer;
+    height: 24px;
+    margin-left: 5px;
+    padding: 0 5px;
+    color: #606060;
+    }
+.smallbutton {
+    background-color: #116C8E;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 5px 5px 5px grey;
+    cursor: pointer;
+    height: 20px;
+    margin-left: 5px;
+    padding: 0 5px;
+    color: #606060;
+    }
+
+/* Small tab on the left of each link with edit/delete buttons. */
+.button_edit, .button_delete { border-radius:0; box-shadow:none; border-style:none; border-width:0; padding:0; background:none; }
+.linkeditbuttons {  
+    float: right;                               /*   AM   */
+    padding: 6px;
+    position: relative;
+}
+.button_edit, .button_delete {
+      opacity:0.75
+}
+.button_edit:hover, .button_delete:hover {  
+    opacity:0.95
+}
+
+
+#pageheader #logo a {
+    background-image: url('../images/hackens.png');
+	background-color: transparent;
+    background-repeat: no-repeat;
+    float:right;
+    margin:10px 10px 0 0;
+    width:165px;
+    height:38px;
+}
+
+#topcount {                    /*   AM bulle  */
+}
+
+#pageheader {
+    background-color: rgba(196, 198, 199, 0.3);                             /*   AM   */
+    border-bottom: 1px solid #DDDDDD;
+    color: #333333;
+    width:100%;
+    font-family:'OpenSans',Sans-Serif;  /*   AM + free fonts  */
+    font-size: 13pt;  /*   AM   */
+}
+
+#pageheader a, #pageheader a:visited {
+    background-color: #E0E2E2;                             /*   AM   */
+    color:#777777;
+    float:left;
+    text-decoration:none;
+    font-size:13pt;
+    padding: 13px;
+    margin: 7px 2px;
+}
+#pageheader a:hover {
+    background-color: #DDDDDD;
+    color:#333333;
+    transition-duration:0.5s;
+}
+
+#menu  {                                  /*AM nouveau #id CSS + hack CSS dans loginform.html */
+    width:980px!important;
+    margin:0 auto;  
+    height:192px; 
+}
+
+#toolsdiv a{
+    clear:both;
+}
+#toolsdiv a span{
+    color:#777777;
+}
+.linksperpage,.tagfilter,.searchform,.addform {
+    background-color: #F7F7F7;
+    display:inline;
+    border: 1px solid #DDDDDD;
+    padding:5px;
+    border: none;
+    border-radius: 3px;
+    margin:10px 3px 3px 3px;
+    color:#cecece;
+}
+
+.linksperpage {
+    background-color: #FFFFFF;                            /*AM*/
+    border: 1px solid #DDDDDD;
+    padding: 1px 3px;
+}
+
+.linksperpage input,.tagfilter input, .searchform input, .addform input{
+    border:none;
+    color:#606060;
+    background:none;
+    box-shadow:none;
+    padding:5px;
+}
+
+.linksperpage input{
+    padding:0;
+}
+
+.tagfilter input.bigbutton,.searchform input.bigbutton,.addform input.bigbutton{
+    padding:0 5px 0 5px;
+    margin:5px 0 5px 0;
+    height:20px;
+    cursor:pointer;
+}
+
+#pageheader #shaarli_title a {
+    background:none;
+    box-shadow:0;
+    font-size: 36px;
+    margin-top: 25px;
+    padding:0px;
+}        
+                         
+#shaarli_title {        							 /*AM +size*/
+    font-family:"Bitter";
+    font-weight:500; 
+    font-size: 35px;
+    line-height: 1.1em;
+    margin:11px 0 0 5px;
+    display:table;
+}
+
+#shaarli_title a { backround:none repeat scroll 0 0 transparent;color: #116C8E !important; border-radius: 0px;box-shadow:0; }
+
+#bonjourshaarli {
+    background-color: #4C4B4A;
+    color: #FFFFFF;
+    display: inline-block;
+    letter-spacing: 1px;
+    margin: 15px 0 -40px 100px;
+    padding: 15px;
+    position: relative;
+    vertical-align: top;
+    font-family:"Bitter";
+    font-size: 14pt;
+}
+
+#bonjourshaarli:after {
+    border-bottom: 20px solid rgba(0, 0, 0, 0);
+    border-left: 20px solid #4C4B4A;
+    bottom: -20px;
+    content: "";
+    left: 20px;
+    position: absolute;
+}
+
+#pageheader a:visited { color:#777777; text-decoration:none;}
+#pageheader a:hover { color:#333333; text-decoration:none;}
+#pageheader a:active { color:#777777; text-decoration:none;}           /*AM*/
+#pageheader a:focus { 
+    color:#333333;
+    background-color:#DDDDDD;
+    text-decoration:none;
+}
+
+#searchcriteria { 
+    color: #777777;
+    font-family: OpenSans,Sans-Serif;
+    font-size: 14pt;
+    padding-top: 22px;
+}
+
+#searchcriteria a,#searchcriteria a:visited{ 
+    color: #777777;
+    font-family: OpenSans,Sans-Serif;
+    font-size: 14pt;
+    padding-top: 22px;
+    text-decoration:none;
+}
+
+.paging { 
+    border-bottom: 2px solid #E0E2E2;           /*AM - new paging - icones fontawesome - modif linklist.paging.html*/
+    clear: both;
+    color: #777777;
+    font-size: 10pt;
+    padding: 10px;
+    text-align: center;
+}
+
+.paging a:link { color:#777777; text-decoration:none;}
+.paging a:visited { color:#777777;  }
+.paging a:hover {  color:#116C8E;  }
+.paging a:active { color:#116C8E;  }
+#paging_mode { float:none;position:absolute; }
+#paging_linksperpage { float:right; padding-right:5px; }
+#paging_current { display:inline; color:#777777; padding:0px; }
+#paging_older { margin-right:15px; }
+#paging_newer { margin-left:15px; }
+
+#formcontainer {                             /*AM nouveau #id CSS */
+  width:980px;
+  margin: 0 auto;
+}
+
+.searchform input {
+    width: 250px!important;
+}
+.tagfilter input {
+    width:250px!important;
+    margin-top:5px;
+}
+#headerform {                                  /*AM champs de recherche*/
+    clear: both;
+    color: #4C4B4A;
+    float: right;
+    margin: -140px 0;
+    padding: 5px;
+}
+#headerform a { color:#4C4B4A;}
+
+#loginform {
+    color: #4C4B4A;
+    padding-bottom: 80px;
+    position: relative;
+}
+#loginform input {                 /*AM login form. loginform.html adapté*/
+    width:150px;
+    background-color: #F7F7F7;
+    border: medium none;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    color: #333333;
+    display: inline;
+    margin: 5px 3px 3px;
+    padding: 5px;
+}
+#loginform  #loginbutton {
+    width:50px;
+}
+#loginform  #sessioncheck {
+    float:left;
+}
+#sessioncheck  input {
+    width:20px!important;
+}
+
+#addlinkform {
+    margin: 20px 0 100px;
+}
+
+#toolsdiv { color:#777777; padding:5px 5px 5px 5px; clear:left; }
+#uploaddiv { color:#4C4B4A; padding:5px 5px 5px 5px; clear:left; }
+#private {margin-top:15px;}
+
+#editlinkform {
+    color: #4C4B4A;
+    padding: 20px;                                /*   AM   */
+    margin-bottom: 60px;
+    font-size:10pt!important;
+}
+ 
+#linklist {
+    margin: 20px auto;                                    /*   AM   */
+    width: 980px!important;
+}
+
+#linklist li {
+    border-bottom: 1px solid #E0E2E2;			/*AM*/
+    margin: 5px 10px;
+    padding: 10px 0 30px;						/*AM - Améliore l'affichage des images */
+}
+
+#partagesocial {
+    position:relative;
+    display:inline;
+    font-size:10pt;
+    vertical-align:-3px;
+    color:#4C4B4A;
+}
+#partagesocial a, #partagesocial a:hover {
+color:#116C8E;
+text-decoration:none;
+}
+#linklist li.private {
+    background-color:rgba(247, 247, 247, 0.54);
+}
+#linklist li.private .linktitle:before {   /*AM - un petit cadena à coté du titre*/
+    font-family: 'Glyphicons Halflings'; 
+    content: "";
+    font-size: 14pt;
+    color: #777777;
+    margin-right: 7px;
+    position: relative;
+    top: 1px;
+}
+
+.private  .linktitle a {color:#969696;}
+.linktitle { 
+    font-family:OpenSans,Sans-Serif;
+    font-size:16pt;
+    font-weight:500; 
+}
+.linktitle a { text-decoration: none; color:#116C8E; }
+.linktitle a:hover { color:#4C4B4A; }
+.linkdate { font-size:9pt; color:#4C4B4A; }
+.linkdate a { padding:2px 0 3px 2px;background-repeat:no-repeat;text-decoration: none; color:#4C4B4A;  }
+.linkdate a:hover { color: #116C8E }
+.linkurl { font-size:9pt; color:#116C8E; }
+.linkdescription { color:#4C4B4A; margin-top:1em; margin-bottom:0; font-weight:normal; max-height:400px; overflow:auto; }
+.linkdescription a { text-decoration: none; color:#3465A4; }
+.linkdescription a:hover { color:#116C8E; }
+.linktaglist { padding-top:10px;}
+.linktag {
+    font-size:9pt;                                           /* AM suppression de la boite. icon css fontawesome - linklist.html adapté */
+    color: #4C4B4A;
+    margin-left:5px
+    text-decoration: none;
+    word-spacing: 5px;
+}
+.linktag a:hover {    color: #116C8E;text-decoration: none;}
+.linktag a,.linktag a:visited {    
+    color: #4C4B4A;
+    text-decoration: none;
+    text-decoration: none;
+}
+.linkshort { font-size:9pt; color:#888; }
+.linkshort a { text-decoration: none; color:#393964; }
+.linkshort a:hover { text-decoration: underline; }
+.buttoneditform { display:inline; }
+
+#footer {                                                /*AM red footer*/
+    background-color: #116C8E;
+    clear: both;
+    color: #FFFFFF;
+    font-size: 10pt;
+    height: 80px;
+    padding-top: 25px;
+    text-align: center;
+}
+
+#footer  a{ color:#FFFFFF!important;
+    text-decoration:none;
+    font-weight:bold;
+    padding:0!important;
+
+}
+#footer  a:hover{ color:#FFFFFF;}
+#newversion { background-color: #FFFFFF; color:#000; position:absolute; top:0;right:0; padding:2 7 2 7;  font-size:9pt;}
+#cloudtag  { 
+    width:980px!important;
+    margin:20px 0px;
+    text-align:justify;
+    word-spacing: 2px;
+}
+#cloudtag a, #cloudtag a:visited { color:#116C8E !important; text-decoration:none;}
+#cloudtag a:hover { color:#4C4B4A !important; text-decoration:none;transition-duration:0.5s;}
+#cloudtag span { color:#4C4B4A !important;}
+#installform td  { font-size: 10pt; color:black; padding:10px 5px 10px 5px; clear:left;}
+#changepasswordform { color:#4C4B4A; padding:10px 5px 10px 5px; clear:left;}
+#changetag { color:#4C4B4A; padding:10px 5px 10px 5px; clear:left;}
+#configform td  { color:#4C4B4A; font-size: 10pt; padding:10px 5px 10px 5px;}
+#configform  { color:#4C4B4A; padding:10px 5px 10px 5px; clear:left;}
+.thumbnail img { 
+    background-color: #4C4B4A; 						/*AlbinoMouse*/
+    border: 2px solid #DDDDDD;
+    border-radius: 15px;
+    display: table-cell;
+    float:right;  
+    height: 100px!important;
+    width: 100px!important;  
+    margin: 8px;
+    overflow: hidden;
+    padding: 1px;
+    position: relative;
+    vertical-align: middle;
+}
+/* If you want thumbnails on the left:
+.thumbnail { float:left;  margin-right: 10px;   }
+.linkcontainer { position: static; margin-left:130px; }
+*/
+
+
+
+/* --- Picture wall CSS --- */
+.picwall_container { 
+    color:#ffffff; 
+    background-color:#FFFFFF; 
+    clear:both;
+    margin: 20px auto;
+    width: 980px; 
+}
+.picwall_pictureframe {                      /*AlbinoMouse*/
+    background-color: #4c4b4a;
+    border: 2px solid #DDDDDD;
+    border-radius: 15px;
+    display: table-cell;
+    float: left;
+    height: 100px;
+    width: 100px;
+    margin: 8px;
+    overflow: hidden;
+    padding: 1px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    z-index: 5;
+}
+.picwall_pictureframe img {       /*AlbinoMouse */
+    margin: -5px;
+    min-height: 110px;
+    min-width: 110px;
+} 
+/* Adapt the width of the image */
+.picwall_pictureframe a {text-decoration:none;color:#4C4B4A;}         /*AM couleur */
+
+/* CSS to show title when hovering an image - no javascript required. */
+.picwall_pictureframe span.info {display: none;}
+.picwall_pictureframe:hover span.info {
+    word-wrap: break-word;
+    display:block;
+    top:0px;
+    position:absolute;
+    border-radius: 10px;
+    height: 102px;
+    width: 102px;
+    padding:7px;
+    margin:0px 0px 0px -5px;
+    font-size:8pt;
+    color:#fff;
+    text-align: left;
+    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.8);  /* FF3+, Saf3+, Opera 10.10+, Chrome, IE9 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66000000,endColorstr=#66000000); /* IE6/IE9 */
+}
+
+
+/* Minimal customisation for jQuery widgets */
+.ui-autocomplete { background-color:#fff; padding-left:5px;}
+.ui-state-hover { background-color: #604dff; color:#fff; }
+
+#linklist li.publicLinkHightLight{
+    background: #ffffff;
+}
+
+div.qrcode {
+    width:220px;
+    height:220px;
+    background-color: #ffffff;
+    border: 1px solid #777777 ;
+    position: absolute;
+    top:-100px;
+    left:-100px;
+    text-align:center;
+    font-size: 9pt;
+    z-index:50;
+    box-shadow:2px 2px 20px 2px #333333;
+}
+
+div#permalinkQrcode {
+    background-color: #FFFFFF;
+    border: 1px solid #777777;
+    box-shadow: 2px 2px 20px 2px #333333;
+    font-size: 8pt;
+    height: 220px;
+    left: -100px;
+    padding: 20px;
+    position: absolute;
+    text-align: center;
+    top: -100px;
+    width: 220px;
+    z-index: 50;
+}
+
+/* --- Daily CSS --- */                                /*AM clean look :-) */
+
+div.daily {                                              
+    background-color: #FFFFFF;
+    font-family: OpenSans,Sans-Serif;
+    margin: 20px auto;
+    position: relative;
+    width: 980px;
+}
+
+#daily_col1 { float:left;position:relative; width:33%; }
+#daily_col2 { float:left;position:relative; width:33%; }
+#daily_col3 { float:left;position:relative; width:33%;}
+
+div.dailyAbout { 
+    display:none;
+    float:left;
+    font-size: 9pt;
+    position:absolute;
+    left:10px;
+    top: 15px;
+    padding: 5px 5px 5px 5px;
+    text-align:center; 
+    width: 160px;
+    margin-left:10px
+}
+div.dailyAbout  a { color: #116C8E ; }
+div.dailyTitle { 
+    display:none;
+    color:#116C8E ;
+    font-weight: normal;
+    font-size: 36px;
+    text-align:center; 
+    font-family:Bitter,Sans-Serif;
+    padding:5px;
+}
+div.dailyDate { 
+    color: #4C4B4A;
+    font-family: Bitter,Sans-Serif;
+    font-size: 20pt;
+    padding: 0 20px 15px;
+    text-align: center;
+}
+div.dailyDate a, div.dailyDate a:visited { 
+    text-decoration:none;
+    color: #4C4B4A;
+}
+
+#dailyPaging {
+    text-decoration:none;
+    font-family:OpenSans,Sans;
+    font-size:10pt;
+    color:#777777;
+    text-align:center;
+    padding-bottom:15px;
+    border-bottom: 2px solid #E0E2E2;
+}
+
+#dailyPaging a,#dailyPaging a:visited{
+    text-decoration:none;
+    font-family:OpenSans,Sans;
+    color:#777777;
+}
+#dailyPaging a:hover{
+    color:#116C8E;
+}
+
+#dailyLinktag, #dailyLinktag a {
+    color:#777777;
+	font-size:8pt;
+	padding-right:8pt;
+}
+#dailyLinktag a:hover {
+    color:#116C8E;
+}
+
+div.daily div.dailyDate span {
+    display:none
+} 
+
+.linkeditbuttonsDaily, .linkeditbuttonsDaily input {
+    color: #116C8E;
+    float: left;
+    font-size: 12px;
+    margin: -12px 10px 0 0;
+	opacity:0.75;
+}
+.linkeditbuttonsDaily input:hover {
+  font-weight:bold;  
+  opacity:1;
+}
+
+/* Individual entries in "Daily": */
+div.dailyEntry{
+    margin: 5px 10px 2px 5px;
+    font-size: 10pt;
+    border-bottom: 1px solid #E0E2E2;
+	padding-bottom: 6px;
+}
+div.dailyEntry  a { text-decoration:none; color: #116C8E ; }
+div.dailyEntry:hover {
+background-color:rgba(0, 0, 0, 0.04);
+}
+div.dailyEntryTags { font-size:7pt;  }
+div.dailyEntryTitle {
+    font-size: 13pt;
+    line-height: 1.2em;
+    padding: 2px 0;
+}
+div.dailyTitle img.nomobile {display:none;}   /* Cache les images du titre*/
+div.daily div img {display:none;}   /* Cache l'image du bas*/
+div.dailyEntry div a img  {display:inline !important;}
+div.dailyEntryThumbnail { 
+    width:100%; 
+    text-align:center; 
+    padding:4px 0px 2px 0px;
+}
+div.dailyEntryDescription{ 
+    margin-top: 10px;
+    margin-bottom: 30px; 
+    text-align:justify; 
+    overflow:auto;
+    color:#4C4B4A ;
+}
+
+/* Common css screwdriver */
+.clear{
+    clear:both;
+}
+
+/* For lazy images loading in picture wall.
+   using http://www.appelsiini.net/projects/lazyload 
+ */
+.lazyimage { display:none; }
+
+@media print {
+html {border:none;background:#fff!important;color:#000!important;}
+body {font-size:12pt;width:auto!important;margin:auto!important;}
+p {orphans:3; /*pas de ligne seule en bas */widows:3;/*pas de ligne seule en haut*/}
+a {color:#000!important;text-decoration:none!important;}
+#pageheader, .paging, #linklist li form, #footer {display:none;}
+#linklist li.private { background-color: none; border-left:0; }
+.linkdate { line-height:2; }
+.linkurl { color:#000; }
+.linkdescription { font-size:10pt;}
+.linktag { border: 1px solid black; font-style:italic;  font-size:9pt;}
+}
+
+
+/* ---------------------- Thème pour smartphones --------------------------------------------------*/
+
+@media handheld, only screen and (max-width: 480px), only screen and (max-width: 980px) {
+
+html {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #777777;
+}
+.nomobile  { display:none; }
+
+#menu , #formcontainer, #linklist, .picwall_container, .daily, .cloudtag  {
+    width:100%!important;
+    display:inline;
+    margin:0;
+}
+
+main {
+    width:100% !important;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+#pageheader {
+    margin-top: -10px;
+}
+#pageheader a {
+    padding:5px;
+    margin:3px;
+}
+
+#bonjourshaarli {display:none;}
+
+#headerform {
+    background-color: #FFFFFF;
+    clear: both;
+    color: #4C4B4A;
+    display: block;
+    float: left;
+    padding-bottom: 5px;
+    position: relative;
+    margin:5px 0;
+    width: 80%;
+}
+#headerform input {
+width:100%;
+}
+.searchform, .tagfilter {
+  margin:5px 0 0 0;
+}
+.tagfilter {
+margin-top:-20px;
+}
+#loginform {
+    background-color: #FFFFFF;
+    clear: both;
+    color: #4C4B4A;
+    display: block;
+    float: left;
+    height: 100%;
+    padding: 5px;
+    position: relative;
+    margin:25px 0;
+    width: 100%;
+}
+#loginform #sessioncheck {
+    float: left;
+}
+#pageheader a {
+    padding:5px;
+    margin:3px;
+}
+#paging_linksperpage {display:none;}
+.searchform {margin-bottom:10px;}
+.searchform,.tagfilter  { display:block !important; padding:3px !important; width:100% !important; }
+.searchform input,.tagfilter input  { margin:0 !important; padding:3px !important; display:inline !important; }
+.tagfilter input.bigbutton,.searchform input.bigbutton,.addform input.bigbutton{  width:30%; font-size:smaller;}
+#searchform_value { width:70% !important; }
+#tagfilter_value { width:70% !important; }
+div.qrcode { position:relative; float:left; top:-10px; left:0px; }
+#paging_mode { position:relative; }
+#paging_linksperpage { float:none; margin-bottom:10px; font-size:smaller;}
+
+.paging, #dailyPaging {
+    text-align: center;
+    font-size:14pt;   					/*AM pour les gros doigts*/
+    margin-top:-15px;
+    background-color: #E0E2E2;
+    color: #777777;
+    margin: 7px 3px;
+    padding:0px;
+    text-decoration: none;
+}
+
+.paging:first-child {
+	height: 0;
+	overflow: hidden;
+}
+
+#dailyPaging #paging_mode {
+    display: block;
+}
+
+div.dailyDate {
+	margin-top: 123px;
+}
+
+#datepicker {
+    display:none;
+}
+.ui-datepicker-trigger {
+    margin-right:5px;
+    vertical-align: middle;
+}
+
+#paging_current , #paging_newer {
+    display: block;
+}
+.thumbnail { float:none; height:auto; margin: 0px; text-align:center;}
+#cloudtag  { padding:0px; }
+div.dailyEntry : { padding:0px 3px 10px 3px;}
+div.dailyAbout {  float:none; position:relative; width:100%; clear:both; padding:0px; top:0px; left:0px; }
+#daily_col1,#daily_col2,#daily_col3 { float:none; width:100%; padding:0px;}
+div.dailyTitle  { font-size: 18pt; margin-top:5px; padding:0px;}
+div.dailyDate  {  font-size: 11pt;padding:0px; display:block; }
+div.dailyEntryTitle { font-size:16pt; font-weight:bold;}
+div.dailyEntryDescription { font-size:10pt; }
+
+#footer {
+height: 120px;
+} 
+}
+
+#activeLinklist, #activeLinklist i {
+	background-color: #116C8E !important;
+	color: #FFFFFF !important;
+}

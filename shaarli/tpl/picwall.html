@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>{include="includes"}
+{if="empty($GLOBALS['disablejquery'])"}	
+<script src="inc/jquery/js/jquery.min.js#"></script>
+<script src="inc/jquery/js/jquery-ui.min.js#"></script>
+<script src="inc/jquery/js/jquery.lazyload.min.js#"></script>
+{/if}
+</head>
+<body>
+	<div id="pageheader">{include="page.header"}
+    <div id=formcontainer><div id="headerform" style="white-space:nowrap;">
+        <form method="GET" class="searchform" name="searchform"><input type="text" id="searchform_value" name="searchterm" placeholder="recherche libre"> </form> <br/>
+        <form method="GET" class="tagfilter" name="tagfilter"><input type="text" name="searchtags" id="tagfilter_value" placeholder="recherche par tag"></form></div>
+	</div>
+</div>
+<center>
+<div class="picwall_container">
+    {loop="linksToDisplay"}
+    <div class="picwall_pictureframe">
+	    {$value.thumbnail}<a href="{$value.permalink}"><span class="info">{$value.title|htmlspecialchars}</span></a>
+    </div>
+    {/loop}
+</div>
+</center>
+{include="page.footer"}
+
+{if="empty($GLOBALS['disablejquery'])"} 
+<script>
+$(document).ready(function() {
+    $("img.lazyimage").show().lazyload();
+});
+</script>
+{/if} 
+</body>
+</html>

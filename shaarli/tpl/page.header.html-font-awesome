@@ -1,0 +1,29 @@
+
+   <div id="menu">
+   <div id="logo" title="Share your links !" onclick="document.location='?';"></div>
+    <span id="bonjourshaarli" class="nomobile">a déjà partagé {if="!empty($linkcount)"}{$linkcount}{/if} liens!</span>
+    <span id="shaarli_title"><a href="?">{$shaarlititle|htmlspecialchars}</a></span>
+{if="!empty($_GET['source']) && $_GET['source']=='bookmarklet'"}
+    <style TYPE="text/css">#pageheader {margin-top:-10px} #menu {height: 100px;} #bonjourshaarli{display:none;}</style>
+	{ignore} When called as a popup from bookmarklet, do not display menu. {/ignore}
+{else}
+    <a id="activeLinklist" href="?" class="nomobile"><i class="fa fa-star"></i> liens</a>
+    <a href="http://effingo.be"><i class="fa fa-thumb-tack"></i> blog</a>
+    <a id="activeDaily" href="?do=daily"><i class="fa fa-th"></i> revue</a>
+    <a id="activeTagcloud" href="?do=tagcloud"><i class="fa fa-tags"></i> tags</a>
+    <a id="activePicwall" href="?do=picwall{$searchcrits}"><i class="fa fa-picture-o"></i> images</a>
+    <a href="http://effingo.be/a-propos/" class="cachemoi"><i class="fa fa-info-circle"></i> à propos</a>
+    <a href="http://effingo.be/contact/" class="cachemoi"><i class="fa fa-envelope"></i> contact</a>
+    <a href="{$feedurl}?do=rss{$searchcrits}" class="nomobile"><i class="fa fa-rss"></i> rss</a>
+{if="isLoggedIn()"}
+    <style TYPE="text/css">.cachemoi {display:none;}</style>
+    <a id="activeAddlink" href="?do=addlink"><b><i class="fa fa-link"></i>  nouveau lien</b></a>
+    <a id="activeOptions" href="?do=tools"><i class="fa fa-cogs"></i> options</a>
+    <a href="?do=logout"><i class="fa fa-sign-out"></i> logout</a>
+    {elseif="$GLOBALS['config']['OPEN_SHAARLI']"}
+    <a id="activeOptions" href="?do=tools">options</a><a href="?do=addlink"><b><i class="fa fa-link"></i> nouveau lien</b></a>
+{else}
+    <a id="activeLogin" href="?do=login"><i class="fa fa-sign-in"></i> login</a>
+{/if}
+{/if}</div>
+    <div class="clear"></div>
