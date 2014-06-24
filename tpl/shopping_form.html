@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>{include="includes"}
+</head>
+<body>
+<div id="pageheader">
+    {include="page.header"}
+</div>
+
+<main class="jarvis">
+    <h1>{$title}</h1>
+    <form method="post" action="" class="center">
+        <p><label for="item">Item : </label><input type="text" name="item" id="item" {if="!empty($item)"}value="{$item}"{/if}/></p>
+        <p><label for="author">Auteur : </label><input type="text" name="author" id="author" {if="!empty($author)"}value="{$author}"{/if}/></p>
+        <p><label for="date">Date (DD/MM/YYYY HH:MM) : </label><input type="text" name="date" id="date" {if="!empty($date)"}value="{$date}"{/if}/></p>
+        <p><label for="comment">Commentaire : </label><textarea name="comment" id="comment">{if="!empty($comment)"}{$comment}{/if}</textarea></p>
+        <p>Acheté ? <input type="radio" name="bought" id="yes_form" value="1" {if="!empty($bought)"}checked="checked"{/if}/><label for="yes_form">Oui</label> <input type="radio" name="bought" id="no_form" value="0" {if="empty($bought)"}checked="checked"{/if}/><label for="no_form">Non</label></p>
+        <p>{if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=courses">Retour</a></p>
+    </form>
+</main>
+
+{include="page.footer"} 
+</body>
+</html>

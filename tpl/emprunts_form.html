@@ -10,7 +10,7 @@
 <main class="jarvis">
     <h1>{$title}</h1>
     <form method="post" action="" class="center">
-        <p><label for="borrower">Emprunteur : </label><input type="text" name="borrower" id="borrower" {if="!empty($borrower)"}value="{$borrower}"{/if}/></p>
+        <p><label for="borrower">Emprunteur (pseudo irc ou e-mail) : </label><input type="text" name="borrower" id="borrower" {if="!empty($borrower)"}value="{$borrower}"{/if}/></p>
         <p><label for="tool">Outil : </label><input type="text" name="tool" id="tool" {if="!empty($tool)"}value="{$tool}"{/if}/></p>
         <p><label for="date_from">Date de début (DD/MM/YYYY HH:MM) : </label><input type="text" name="date_from" id="date_from" {if="!empty($date_from)"}value="{$date_from}"{/if}/></p>
         <p><label for="until">Date de fin (DD/MM/YYYY HH:MM) : </label><input type="text" name="until" id="until" {if="!empty($until)"}value="{$until}"{/if}/></p>

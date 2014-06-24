@@ -1550,10 +1550,50 @@ function renderPage()
             echo '<script language="JavaScript">alert("Achat à faire supprimé.");document.location=\'?do=courses\';</script>';
             exit;
         }
-        elseif(!empty($_GET['edit'])) {
-            // TODO
-            echo '<script language="JavaScript">alert("Achat à faire modifié.");document.location=\'?do=courses\';</script>';
-            exit;
+        elseif(!empty($_GET['edit']) || isset($_GET['add'])) {
+            if(!empty($_POST['item']) && !empty($_POST['author']) && !empty($_POST['comment']) && !empty($_POST['date']) && isset($_POST['bought'])) {
+                if(!empty($_POST['id'])) {
+                    $query = $bdd->prepare("UPDATE shopping SET author=:author, item=:item, date=:date, comment=:comment, bought=:bought WHERE id=:id");
+                    $query->bindValue(":id", intval($_POST['id']));
+                }
+                else {
+                    $query = $bdd->prepare("INSERT INTO shopping(id, item, author, comment, date, bought) VALUES('', :item, :author, :comment, :date, :bought)");
+                }
+                $date = DateTime::createFromFormat('d/m/Y H:i', $_POST['date']);
+                $query->bindValue(":item", $_POST['item']);
+                $query->bindValue(":author", $_POST['author']);
+                $query->bindValue(":date", $date->format("Y-m-d H:i:s"));
+                $query->bindValue(":comment", $_POST['comment']);
+                $query->bindValue(":bought", intval($_POST['bought']));
+                $query->execute();
+                if(!empty($_POST['id'])) {
+                    echo '<script language="JavaScript">alert("Achat à faire modifié.");document.location=\'?do=courses\';</script>';
+                }
+                else {
+                    echo '<script language="JavaScript">alert("Achat à faire ajouté.");document.location=\'?do=courses\';</script>';
+                }
+                exit;
+            }
+            else {
+                $PAGE = new pageBuilder;
+                $PAGE->assign("title", "Courses");
+                if(!empty($_GET['edit'])) {
+                    $query = $bdd->prepare('SELECT id, item, author, comment, date, bought FROM shopping WHERE id=:id');
+                    $query->bindValue('id', intval($_GET['edit']));
+                    $query->execute();
+                    $result = $query->fetch();
+                    $PAGE->assign("item", htmlspecialchars($result['item']));
+                    $PAGE->assign("author", htmlspecialchars($result['author']));
+                    $PAGE->assign("comment", htmlspecialchars($result['comment']));
+                    $PAGE->assign("bought", intval($result['bought']));
+                    $date = new DateTime($result['date']);
+                    $PAGE->assign("date", $date->format('d/m/Y H:i'));
+                    $PAGE->assign("id", intval($_GET['edit']));
+                }
+                $PAGE->renderPage("shopping_form");
+                $PAGE->assign("title", "Courses");
+                exit();
+            }
         }
         else {
             $PAGE = new pageBuilder;
