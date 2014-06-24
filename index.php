@@ -1715,18 +1715,58 @@ function renderPage()
             return $year;
         }
         $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
+        $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $bdd->query("SET NAMES utf8");
         if(!empty($_GET['del'])) {
             $query = $bdd->prepare("DELETE FROM budget WHERE id=:id");
             $query->bindValue(':id', intval($_GET['del']));
             $query->execute();
-            echo '<script language="JavaScript">alert("Dépense supprimée.");document.location=\'?do=budget\';</script>';
+            echo '<script language="JavaScript">alert("Ligne de budget supprimée.");document.location=\'?do=budget\';</script>';
             exit;
         }
-        elseif(!empty($_GET['edit'])) {
-            // TODO
-            echo '<script language="JavaScript">alert("Dépense modifiée.");document.location=\'?do=budget\';</script>';
-            exit;
+        elseif(!empty($_GET['edit']) || isset($_GET['add'])) {
+            if(!empty($_POST['amount']) && !empty($_POST['author']) && !empty($_POST['date']) && !empty($_POST['comment'])) {
+                if(!empty($_POST['id'])) {
+                    $query = $bdd->prepare("UPDATE budget SET author=:author, amount=:amount, date=:date, comment=:comment WHERE id=:id");
+                    $query->bindValue(":id", intval($_POST['id']));
+                }
+                else {
+                    $query = $bdd->prepare("INSERT INTO budget(id, amount, author, date, comment) VALUES('', :amount, :author, :date, :comment)");
+                }
+                $date = DateTime::createFromFormat('d/m/Y H:i', $_POST['date']);
+                $query->bindValue(":author", $_POST['author']);
+                $query->bindValue(":amount", floatval($_POST['amount']));
+                $query->bindValue(":date", $date->format("Y-m-d H:i:s"));
+                $query->bindValue(":comment", $_POST['comment']);
+                $query->execute();
+                if(!empty($_POST['id'])) {
+                    echo '<script language="JavaScript">alert("Ligne de budget modifiée.");document.location=\'?do=budget\';</script>';
+                }
+                else {
+                    echo '<script language="JavaScript">alert("Ligne de budget ajoutée.");document.location=\'?do=budget\';</script>';
+                }
+                exit;
+            }
+            else {
+                $PAGE = new pageBuilder;
+                $PAGE->assign("title", "Budget");
+                if(!empty($_GET['edit'])) {
+                    $PAGE->assign('id', intval($_GET['edit']));
+                    $query = $bdd->prepare("SELECT id, amount, author, date, comment FROM budget WHERE id=:id");
+                    $query->bindValue(":id", intval($_GET['edit']));
+                    $query->execute();
+                    $result = $query->fetch();
+
+                    $date = new DateTime($result["date"]);
+
+                    $PAGE->assign('amount', floatval($result["amount"]));
+                    $PAGE->assign('author', htmlspecialchars($result["author"]));
+                    $PAGE->assign('date', $date->format('d/m/Y H:i'));
+                    $PAGE->assign('comment', htmlspecialchars($result["comment"]));
+                }
+                $PAGE->renderPage('budget_form');
+                exit;
+            }
         }
         else {
             $PAGE = new pageBuilder;
