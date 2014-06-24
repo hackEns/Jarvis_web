@@ -884,3 +884,7 @@ height: 120px;
 .jarvis .urgent {
     background-color: red;
 }
+
+.jarvis .center {
+    text-align: center;
+}

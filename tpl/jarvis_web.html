@@ -9,6 +9,7 @@
 
 <main class="jarvis">
     <h1>{$title}</h1>
+{if="count($table) !== 1"}
     {if="!empty($table[0]['title'])"}
     <h2>{$table[0]['title']}</h2>
     {/if}
@@ -35,6 +36,9 @@
         {$header=0}
         {/loop}
     </table>
+{else}
+<p class="center">Pas de résultats pour l'instant.</p>
+{/if}
 
 </main>
 
