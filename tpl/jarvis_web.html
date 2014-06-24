@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>{$title}</title>
-        <link rel="stylesheet" href="../inc/jarvis_web.css">
-    </head>
-    <body>
-        <h1>{$title}</h1>
-        {if="!empty($table[0]['title'])"}
-        <h2>{$table[0]['title']}</h2>
-        {/if}
-        <table>
+<head>{include="includes"}
+</head>
+<body>
+<div id="pageheader">
+    {include="page.header"}
+</div>
+
+<main class="jarvis">
+
+    <h1>{$title}</h1>
+    {if="!empty($table[0]['title'])"}
+    <h2>{$table[0]['title']}</h2>
+    {/if}
+    <table>
+        {$header=1}
+        {loop="$table"}
+
+        {if="$key != 0 && !empty($value['title'])"}
+    </table>
+    <h2>{$value["title"]}</h2>
+    <table>
             {$header=1}
-            {loop="$table"}
+        {/if}
 
-            {if="$key != 0 && !empty($value['title'])"}
-        </table>
-        <h2>{$value["title"]}</h2>
-        <table>
-                {$header=1}
-            {/if}
-
-            <tr class="{$value['class']}">
-                {loop="$value['content']"}
-                    {if="$header == 1"}
-                    <th>{$value2}</th>
-                    {else}
-                    <td>{$value2}</td>
-                    {/if}
-                {/loop}
-            </tr>
-            {$header=0}
+        <tr class="{$value['class']}">
+            {loop="$value['content']"}
+                {if="$header == 1"}
+                <th>{$value2}</th>
+                {else}
+                <td>{$value2}</td>
+                {/if}
             {/loop}
-        </table>
-    </body>
+        </tr>
+        {$header=0}
+        {/loop}
+    </table>
+
+</main>
+
+{include="page.footer"} 
+</body>
 </html>

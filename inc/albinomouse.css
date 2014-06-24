@@ -849,3 +849,38 @@ height: 120px;
 	background-color: #116C8E !important;
 	color: #FFFFFF !important;
 }
+
+
+/* ADDED FOR JARVIS */
+.jarvis table {
+    margin: auto;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.jarvis td, th {
+    padding: 0.5em;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.jarvis th {
+    background-color: #116C8E;
+    color: white;
+    font-weight: bold;
+}
+
+.jarvis h2 {
+    text-align: center;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    font-size: 1.5em;
+}
+
+.jarvis .disabled {
+    background-color: grey;
+}
+
+.jarvis .urgent {
+    background-color: red;
+}

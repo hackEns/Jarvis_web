@@ -1553,7 +1553,7 @@ function renderPage()
             $table[] = array("class"=>($result["bought"] == 1) ? "disabled" : "", "content"=>array(htmlspecialchars($result["item"]), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), $date->format("d/m/Y"), $result["bought"] == 1 ? "Oui" : "Non"));
         }
 
-        $PAGE->assign("title", $GLOBALS["title"]." - Courses");
+        $PAGE->assign("title", "Courses");
         $PAGE->assign("table", $table);
         $PAGE->renderPage('jarvis_web');
         exit;
@@ -1576,7 +1576,7 @@ function renderPage()
 
             $table[] = array("class"=>(($result["back"] == 1) ? "disabled " : "").(($interval->format("a") <= 1) ? "urgent" : ""), "content"=>array(htmlspecialchars($result['tool']), htmlspecialchars($result['borrower']), $from->format("d/m/Y"), $until->format("d/m/Y"), (($result["back"] == 1) ? "Oui" : "Non")));
         }
-        $PAGE->assign("title", $GLOBALS["title"]." - Emprunts");
+        $PAGE->assign("title", "Emprunts");
         $PAGE->assign("table", $table);
         $PAGE->renderPage('jarvis_web');
         exit;
@@ -1632,7 +1632,7 @@ function renderPage()
             $scholar_year = $result_scholar_year;
             $total -= $amount;
         }
-        $PAGE->assign("title", $GLOBALS["title"]." - Budget");
+        $PAGE->assign("title", "Budget");
         $PAGE->assign("table", $table);
         $PAGE->renderPage('jarvis_web');
         exit;
