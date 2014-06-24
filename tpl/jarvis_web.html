@@ -9,6 +9,7 @@
 
 <main class="jarvis">
     <h1>{$title}</h1>
+    <p class="center"><a href="?do={$do}&amp;add">Ajouter une nouvelle entrée</a></p>
 {if="count($table) !== 1"}
     {if="!empty($table[0]['title'])"}
     <h2>{$table[0]['title']}</h2>

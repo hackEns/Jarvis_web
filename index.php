@@ -1541,45 +1541,123 @@ function renderPage()
     // -------- Courses page
     if (isset($_SERVER["QUERY_STRING"]) && startswith($_SERVER["QUERY_STRING"],'do=courses'))
     {
-        $PAGE = new pageBuilder;
         $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
         $bdd->query("SET NAMES utf8");
-        $query = $bdd->query("SELECT id, item, author, comment, date, bought FROM courses ORDER BY date DESC");
-        $results = $query->fetchAll();
-
-        $table = array(array("class"=>"", "content"=>array("Item", "Commentaire", "Proposé par", "Date", "Acheté")));
-        foreach($results as $result) {
-            $date = new DateTime($result["date"]);
-            $table[] = array("class"=>($result["bought"] == 1) ? "disabled" : "", "content"=>array(htmlspecialchars($result["item"]), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), $date->format("d/m/Y"), $result["bought"] == 1 ? "Oui" : "Non"));
+        if(!empty($_GET['del'])) {
+            $query = $bdd->prepare("DELETE FROM shopping WHERE id=:id");
+            $query->bindValue(':id', intval($_GET['del']));
+            $query->execute();
+            echo '<script language="JavaScript">alert("Achat à faire supprimé.");document.location=\'?do=courses\';</script>';
+            exit;
         }
+        elseif(!empty($_GET['edit'])) {
+            // TODO
+            echo '<script language="JavaScript">alert("Achat à faire modifié.");document.location=\'?do=courses\';</script>';
+            exit;
+        }
+        else {
+            $PAGE = new pageBuilder;
+            $query = $bdd->query("SELECT id, item, author, comment, date, bought FROM shopping ORDER BY date DESC");
+            $results = $query->fetchAll();
 
-        $PAGE->assign("title", "Courses");
-        $PAGE->assign("table", $table);
-        $PAGE->renderPage('jarvis_web');
-        exit;
+            $logged_in_array = (isLoggedIn()) ? array("Modifier", "Supprimer") : array();
+            $table = array(array("class"=>"", "content"=>array_merge(array("Item", "Commentaire", "Proposé par", "Date", "Acheté"), $logged_in_array)));
+            foreach($results as $result) {
+                $date = new DateTime($result["date"]);
+                $logged_in_array = (isLoggedIn()) ? array('<a href="?do=courses&edit='.$result["id"].'">Modifier</a>', '<a href="?do=courses&del='.$result["id"].'">Supprimer</a>') : array();
+                $table[] = array("class"=>($result["bought"] == 1) ? "disabled" : "", "content"=>array_merge(array(htmlspecialchars($result["item"]), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), $date->format("d/m/Y"), $result["bought"] == 1 ? "Oui" : "Non"), $logged_in_array));
+            }
+
+            $PAGE->assign("title", "Courses");
+            $PAGE->assign("table", $table);
+            $PAGE->assign("do", "courses");
+            $PAGE->renderPage('jarvis_web');
+            exit;
+        }
     }
 
     // -------- Emprunts page
     if (isset($_SERVER["QUERY_STRING"]) && startswith($_SERVER["QUERY_STRING"],'do=emprunts'))
     {
-        $PAGE = new pageBuilder;
         $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
-        $query = $bdd->query("SELECT id, borrower, tool, date_from, until, back FROM borrowings ORDER BY until DESC");
-        $results = $query->fetchAll();
-
-        $table = array(array("class"=>"", "content"=>array("Outil", "Emprunté par", "Depuis le", "Retour prévu le", "Rendu")));
-        foreach($results as $result) {
-            $from = new DateTime($result["date_from"]);
-            $until = new DateTime($result["until"]);
-            $now = new DateTime();
-            $interval = $until->diff($now);
-
-            $table[] = array("class"=>(($result["back"] == 1) ? "disabled " : "").(($interval->format("a") <= 1) ? "urgent" : ""), "content"=>array(htmlspecialchars($result['tool']), htmlspecialchars($result['borrower']), $from->format("d/m/Y"), $until->format("d/m/Y"), (($result["back"] == 1) ? "Oui" : "Non")));
+        $bdd->query("SET NAMES utf8");
+        if(!empty($_GET['del'])) {
+            $query = $bdd->prepare("DELETE FROM borrowings WHERE id=:id");
+            $query->bindValue(':id', intval($_GET['del']));
+            $query->execute();
+            echo '<script language="JavaScript">alert("Emprunt supprimé.");document.location=\'?do=emprunts\';</script>';
+            exit;
         }
-        $PAGE->assign("title", "Emprunts");
-        $PAGE->assign("table", $table);
-        $PAGE->renderPage('jarvis_web');
-        exit;
+        elseif(!empty($_GET['edit']) || isset($_GET['add'])) {
+            if(!empty($_POST['borrower']) && !empty($_POST['tool']) && !empty($_POST['date_from']) && !empty($_POST['until']) && isset($_POST['back'])){
+                if(!empty($_POST['id'])) {
+                    $query = $bdd->prepare("UPDATE borrowings SET borrower=:borrower, tool=:tool, date_from=:date_from, until=:until, back=:back WHERE id=:id");
+                    $query->bindValue(":id", intval($_POST['id']));
+                }
+                else {
+                    $query = $bdd->prepare("INSERT INTO borrowings(id, borrower, tool, date_from, until, back) VALUES('', :borrower, :tool, :date_from, :until, :back)");
+                }
+                $date_from = DateTime::createFromFormat('d/m/Y H:i', $_POST['date_from']);
+                $until = DateTime::createFromFormat('d/m/Y H:i', $_POST['until']);
+                $query->bindValue(":borrower", $_POST['borrower']);
+                $query->bindValue(":tool", $_POST['tool']);
+                $query->bindValue(":date_from", $date_from->format("Y-m-d H:i:s"));
+                $query->bindValue(":until", $until->format("Y-m-d H:i:s"));
+                $query->bindValue(":back", intval($_POST['back']));
+                $query->execute();
+                if(!empty($_POST['id'])) {
+                    echo '<script language="JavaScript">alert("Emprunt modifié.");document.location=\'?do=emprunts\';</script>';
+                }
+                else {
+                    echo '<script language="JavaScript">alert("Emprunt ajouté.");document.location=\'?do=emprunts\';</script>';
+                }
+                exit;
+            }
+            else {
+                $PAGE = new pageBuilder;
+                $PAGE->assign("title", "Emprunts");
+                if(!empty($_GET['edit'])) {
+                    $PAGE->assign('id', intval($_GET['edit']));
+                    $query = $bdd->prepare("SELECT id, borrower, tool, date_from, until, back FROM borrowings WHERE id=:id");
+                    $query->bindValue(":id", intval($_GET['edit']));
+                    $query->execute();
+                    $result = $query->fetch();
+
+                    $date_from = new DateTime($result["date_from"]);
+                    $until = new DateTime($result["until"]);
+
+                    $PAGE->assign('borrower', htmlspecialchars($result["borrower"]));
+                    $PAGE->assign('tool', htmlspecialchars($result["tool"]));
+                    $PAGE->assign('date_from', $date_from->format('d/m/Y H:i'));
+                    $PAGE->assign('until', $until->format('d/m/Y H:i'));
+                    $PAGE->assign('back', intval($result["back"]));
+                }
+                $PAGE->renderPage('emprunts_form');
+                exit;
+            }
+        }
+        else {
+            $PAGE = new pageBuilder;
+            $query = $bdd->query("SELECT id, borrower, tool, date_from, until, back FROM borrowings ORDER BY until DESC");
+            $results = $query->fetchAll();
+
+            $logged_in_array = (isLoggedIn()) ? array("Modifier", "Supprimer") : array();
+            $table = array(array("class"=>"", "content"=>array_merge(array("Outil", "Emprunté par", "Depuis le", "Retour prévu le", "Rendu"), $logged_in_array)));
+            foreach($results as $result) {
+                $from = new DateTime($result["date_from"]);
+                $until = new DateTime($result["until"]);
+                $now = new DateTime();
+                $interval = $until->diff($now);
+
+                $logged_in_array = (isLoggedIn()) ? array('<a href="?do=emprunts&edit='.$result["id"].'">Modifier</a>', '<a href="?do=emprunts&del='.$result["id"].'">Supprimer</a>') : array();
+                $table[] = array("class"=>(($result["back"] == 1) ? "disabled " : "").(($interval->format("a") <= 1 && $result['back'] == 0) ? "urgent" : ""), "content"=>array_merge(array(htmlspecialchars($result['tool']), htmlspecialchars($result['borrower']), $from->format("d/m/Y"), $until->format("d/m/Y"), (($result["back"] == 1) ? "Oui" : "Non")), $logged_in_array));
+            }
+            $PAGE->assign("title", "Emprunts");
+            $PAGE->assign("table", $table);
+            $PAGE->assign("do", "emprunts");
+            $PAGE->renderPage('jarvis_web');
+            exit;
+        }
     }
 
     // -------- Budget page
@@ -1596,46 +1674,64 @@ function renderPage()
             }
             return $year;
         }
-        $PAGE = new pageBuilder;
         $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
-        $query = $bdd->query("SELECT id, amount, author, date as date, comment FROM budget ORDER BY date DESC");
-        $results = $query->fetchAll();
-
-        $table = array(array("title"=>"", "class"=>"", "content"=>array("Date", "Commentaire", "Ajouté par", "Crédit", "Débit", "Total")));
-
-        // Compute total per year
-        $total_per_year = array();
-        foreach($results as $result) {
-            $date = new DateTime($result["date"]);
-            $scholar_year = scholar_year($date);
-            if(!isset($total_per_year[$scholar_year])) {
-                $total_per_year[$scholar_year] = 0;
-            }
-            $total_per_year[$scholar_year] += floatval($result["amount"]);
+        $bdd->query("SET NAMES utf8");
+        if(!empty($_GET['del'])) {
+            $query = $bdd->prepare("DELETE FROM budget WHERE id=:id");
+            $query->bindValue(':id', intval($_GET['del']));
+            $query->execute();
+            echo '<script language="JavaScript">alert("Dépense supprimée.");document.location=\'?do=budget\';</script>';
+            exit;
         }
+        elseif(!empty($_GET['edit'])) {
+            // TODO
+            echo '<script language="JavaScript">alert("Dépense modifiée.");document.location=\'?do=budget\';</script>';
+            exit;
+        }
+        else {
+            $PAGE = new pageBuilder;
+            $query = $bdd->query("SELECT id, amount, author, date as date, comment FROM budget ORDER BY date DESC");
+            $results = $query->fetchAll();
 
-        $scholar_year = "";
-        $count = 0;
-        foreach($results as $result) {
-            $count++;
-            $date = new DateTime($result["date"]);
-            $result_scholar_year = scholar_year($date);
-            $amount = floatval($result['amount']);
+            $logged_in_array = (isLoggedIn()) ? array("Modifier", "Supprimer") : array();
+            $table = array(array("title"=>"", "class"=>"", "content"=>array_merge(array("Date", "Commentaire", "Ajouté par", "Crédit", "Débit", "Total"), $logged_in_array)));
 
-            if($result_scholar_year != $scholar_year) {
-                $total = $total_per_year[$result_scholar_year];
-                $table[$count - 1]["title"] = $result_scholar_year;
+            // Compute total per year
+            $total_per_year = array();
+            foreach($results as $result) {
+                $date = new DateTime($result["date"]);
+                $scholar_year = scholar_year($date);
+                if(!isset($total_per_year[$scholar_year])) {
+                    $total_per_year[$scholar_year] = 0;
+                }
+                $total_per_year[$scholar_year] += floatval($result["amount"]);
             }
 
-            $table[] = array("title"=> "", "class"=>"", "content"=>array($date->format("d/m/Y"), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : "-"), $total." €"));
+            $scholar_year = "";
+            $count = 0;
+            foreach($results as $result) {
+                $count++;
+                $date = new DateTime($result["date"]);
+                $result_scholar_year = scholar_year($date);
+                $amount = floatval($result['amount']);
 
-            $scholar_year = $result_scholar_year;
-            $total -= $amount;
+                if($result_scholar_year != $scholar_year) {
+                    $total = $total_per_year[$result_scholar_year];
+                    $table[$count - 1]["title"] = $result_scholar_year;
+                }
+
+                $logged_in_array = (isLoggedIn()) ? array('<a href="?do=budget&edit='.$result["id"].'">Modifier</a>', '<a href="?do=budget&del='.$result["id"].'">Supprimer</a>') : array();
+                $table[] = array("title"=> "", "class"=>"", "content"=>array_merge(array($date->format("d/m/Y"), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : "-"), $total." €"), $logged_in_array));
+
+                $scholar_year = $result_scholar_year;
+                $total -= $amount;
+            }
+            $PAGE->assign("title", "Budget");
+            $PAGE->assign("table", $table);
+            $PAGE->assign("do", "budget");
+            $PAGE->renderPage('jarvis_web');
+            exit;
         }
-        $PAGE->assign("title", "Budget");
-        $PAGE->assign("table", $table);
-        $PAGE->renderPage('jarvis_web');
-        exit;
     }
 
     // -------- Tag cloud

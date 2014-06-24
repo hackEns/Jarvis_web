@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>{include="includes"}
+</head>
+<body>
+<div id="pageheader">
+    {include="page.header"}
+</div>
+
+<main class="jarvis">
+    <h1>{$title}</h1>
+    <form method="post" action="" class="center">
+        <p><label for="borrower">Emprunteur : </label><input type="text" name="borrower" id="borrower" {if="!empty($borrower)"}value="{$borrower}"{/if}/></p>
+        <p><label for="tool">Outil : </label><input type="text" name="tool" id="tool" {if="!empty($tool)"}value="{$tool}"{/if}/></p>
+        <p><label for="date_from">Date de début (DD/MM/YYYY HH:MM) : </label><input type="text" name="date_from" id="date_from" {if="!empty($date_from)"}value="{$date_from}"{/if}/></p>
+        <p><label for="until">Date de fin (DD/MM/YYYY HH:MM) : </label><input type="text" name="until" id="until" {if="!empty($until)"}value="{$until}"{/if}/></p>
+        <p>Rendu ? <input type="radio" name="back" id="yes_form" value="1" {if="!empty($back)"}checked="checked"{/if}/><label for="yes_form">Oui</label> <input type="radio" name="back" id="no_form" value="0" {if="empty($back)"}checked="checked"{/if}/><label for="no_form">Non</label></p>
+        <p>{if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=emprunts">Retour</a></p>
+    </form>
+</main>
+
+{include="page.footer"} 
+</body>
+</html>
