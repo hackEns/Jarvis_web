@@ -9,6 +9,7 @@
 
 <main class="jarvis">
     <h1>{$title}</h1>
+    {if="isLoggedIn()"}
     <form method="post" action="" class="center">
         <p><label for="borrower">Emprunteur (pseudo irc ou e-mail) : </label><input type="text" name="borrower" id="borrower" {if="!empty($borrower)"}value="{$borrower}"{/if}/></p>
         <p><label for="tool">Outil : </label><input type="text" name="tool" id="tool" {if="!empty($tool)"}value="{$tool}"{/if}/></p>
@@ -17,6 +18,14 @@
         <p>Rendu ? <input type="radio" name="back" id="yes_form" value="1" {if="!empty($back)"}checked="checked"{/if}/><label for="yes_form">Oui</label> <input type="radio" name="back" id="no_form" value="0" {if="empty($back)"}checked="checked"{/if}/><label for="no_form">Non</label></p>
         <p>{if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=emprunts">Retour</a></p>
     </form>
+    {else}
+    <div class="callout-error">
+        <h4>Erreur</h4>
+        <p>
+            Vous devez êtes connecté pour pouvoir accéder à cette section.
+        </p>
+    </div>
+    {/if}
 </main>
 
 {include="page.footer"} 

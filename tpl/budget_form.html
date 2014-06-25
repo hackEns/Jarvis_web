@@ -9,16 +9,62 @@
 
 <main class="jarvis">
     <h1>{$title}</h1>
-    <form method="post" action="" class="center">
-        <p><label for="author">Auteur : </label><input type="text" name="author" id="author" {if="!empty($author)"}value="{$author}"{/if}/></p>
-        <p><label for="date">Date (DD/MM/YYYY HH:MM) : </label><input type="text" name="date" id="date" {if="!empty($date)"}value="{$date}"{/if}/></p>
-        <p><label for="amount">Montant : </label><input type="text" name="amount" id="amount" {if="!empty($amount)"}value="{$amount}"{/if}/></p>
-        <p>Montant négatif pour une dépense, montant positif pour un crédit.</p>
-        <p><label for="budget">Budget : </label><input type="text" name="budget" id="budget" {if="!empty($budget)"}value="{$budget}"{/if}/></p>
-        <p>Laisser vide pour mettre la ligne sur le budget annuel.</p>
-        <p><label for="comment">Commentaire : </label><textarea name="comment" id="comment">{if="!empty($comment)"}{$comment}{/if}</textarea></p>
-        <p>{if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=courses">Retour</a></p>
+    {if="isLoggedIn()"}
+    <form method="post" action="" class="form-horizontal">
+        <div class="form-item">
+            <label class="left-column" for="author">Auteur : </label>
+            <div class="right-column">
+                <input type="text" name="author" id="author" {if="!empty($author)"}value="{$author}"{/if}/>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="left-column" for="date">Date : </label>
+            <div class="right-column">
+                <input type="text" name="date" id="date" {if="!empty($date)"}value="{$date}"{/if}/>
+            </div>
+        </div>
+        <p class="form-help">
+            Doit être au format jj/mm/aaaa hh:mm
+        </p>
+        <div class="form-item">
+            <label class="left-column" for="amount">Montant : </label>
+            <div class="right-column">
+                <input type="text" name="amount" id="amount" {if="!empty($amount)"}value="{$amount}"{/if}/>
+            </div>
+        </div>
+        <p class="form-help">
+            Montant négatif pour une dépense, montant positif pour un crédit.
+        </p>
+        <div class="form-item">
+            <label class="left-column" for="budget">Budget : </label>
+            <div class="right-column">
+                <input type="text" name="budget" id="budget" {if="!empty($budget)"}value="{$budget}"{/if}/>
+            </div>
+        </div>
+        <p class="form-help">
+            Laisser vide pour mettre la ligne sur le budget annuel.
+        </p>
+        <div class="form-item">
+            <label class="left-column" for="comment">Commentaire : </label>
+            <div class="right-column">
+                <textarea name="comment" id="comment">{if="!empty($comment)"}{$comment}{/if}</textarea>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="right-column">
+                {if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}
+                <input type="submit" value="Valider"/> ou <a href="?do=courses">Retour</a>
+            </div>
+        </div>
     </form>
+    {else}
+    <div class="callout-error">
+        <h4>Erreur</h4>
+        <p>
+            Vous devez êtes connecté pour pouvoir accéder à cette section.
+        </p>
+    </div>
+    {/if}
 </main>
 
 {include="page.footer"} 

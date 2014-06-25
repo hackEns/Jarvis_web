@@ -9,6 +9,7 @@
 
 <main class="jarvis">
     <h1>{$title}</h1>
+    {if="isLoggedIn()"}
     <form method="post" action="" class="center">
         <p><label for="item">Item : </label><input type="text" name="item" id="item" {if="!empty($item)"}value="{$item}"{/if}/></p>
         <p><label for="author">Auteur : </label><input type="text" name="author" id="author" {if="!empty($author)"}value="{$author}"{/if}/></p>
@@ -17,6 +18,14 @@
         <p>Acheté ? <input type="radio" name="bought" id="yes_form" value="1" {if="!empty($bought)"}checked="checked"{/if}/><label for="yes_form">Oui</label> <input type="radio" name="bought" id="no_form" value="0" {if="empty($bought)"}checked="checked"{/if}/><label for="no_form">Non</label></p>
         <p>{if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=courses">Retour</a></p>
     </form>
+    {else}
+    <div class="callout-error">
+        <h4>Erreur</h4>
+        <p>
+            Vous devez êtes connecté pour pouvoir accéder à cette section.
+        </p>
+    </div>
+    {/if}
 </main>
 
 {include="page.footer"} 
