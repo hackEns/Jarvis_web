@@ -1543,14 +1543,14 @@ function renderPage()
     {
         $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
         $bdd->query("SET NAMES utf8");
-        if(!empty($_GET['del'])) {
+        if(!empty($_GET['del']) && isLoggedIn()) {
             $query = $bdd->prepare("DELETE FROM shopping WHERE id=:id");
             $query->bindValue(':id', intval($_GET['del']));
             $query->execute();
             echo '<script language="JavaScript">alert("Achat à faire supprimé.");document.location=\'?do=courses\';</script>';
             exit;
         }
-        elseif(!empty($_GET['edit']) || isset($_GET['add'])) {
+        elseif((!empty($_GET['edit']) || isset($_GET['add'])) && isLoggedIn()) {
             if(!empty($_POST['item']) && !empty($_POST['author']) && !empty($_POST['comment']) && !empty($_POST['date']) && isset($_POST['bought'])) {
                 if(!empty($_POST['id'])) {
                     $query = $bdd->prepare("UPDATE shopping SET author=:author, item=:item, date=:date, comment=:comment, bought=:bought WHERE id=:id");
@@ -1621,14 +1621,14 @@ function renderPage()
     {
         $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
         $bdd->query("SET NAMES utf8");
-        if(!empty($_GET['del'])) {
+        if(!empty($_GET['del']) && isLoggedIn()) {
             $query = $bdd->prepare("DELETE FROM borrowings WHERE id=:id");
             $query->bindValue(':id', intval($_GET['del']));
             $query->execute();
             echo '<script language="JavaScript">alert("Emprunt supprimé.");document.location=\'?do=emprunts\';</script>';
             exit;
         }
-        elseif(!empty($_GET['edit']) || isset($_GET['add'])) {
+        elseif((!empty($_GET['edit']) || isset($_GET['add'])) && isLoggedIn()) {
             if(!empty($_POST['borrower']) && !empty($_POST['tool']) && !empty($_POST['date_from']) && !empty($_POST['until']) && isset($_POST['back'])){
                 if(!empty($_POST['id'])) {
                     $query = $bdd->prepare("UPDATE borrowings SET borrower=:borrower, tool=:tool, date_from=:date_from, until=:until, back=:back WHERE id=:id");
@@ -1717,14 +1717,14 @@ function renderPage()
         $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
         $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $bdd->query("SET NAMES utf8");
-        if(!empty($_GET['del'])) {
+        if(!empty($_GET['del']) && isLoggedIn()) {
             $query = $bdd->prepare("DELETE FROM budget WHERE id=:id");
             $query->bindValue(':id', intval($_GET['del']));
             $query->execute();
             echo '<script language="JavaScript">alert("Ligne de budget supprimée.");document.location=\'?do=budget\';</script>';
             exit;
         }
-        elseif(!empty($_GET['edit']) || isset($_GET['add'])) {
+        elseif((!empty($_GET['edit']) || isset($_GET['add'])) && isLoggedIn()) {
             if(!empty($_POST['amount']) && !empty($_POST['author']) && !empty($_POST['date']) && !empty($_POST['comment']) && isset($_POST['budget'])) {
                 if(!empty($_POST['id'])) {
                     $query = $bdd->prepare("UPDATE budget SET author=:author, amount=:amount, date=:date, comment=:comment, budget=:budget WHERE id=:id");
