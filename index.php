@@ -1604,7 +1604,7 @@ function renderPage()
             $table = array(array("class"=>"", "content"=>array_merge(array("Item", "Commentaire", "Proposé par", "Date", "Acheté"), $logged_in_array)));
             foreach($results as $result) {
                 $date = new DateTime($result["date"]);
-                $logged_in_array = (isLoggedIn()) ? array('<a href="?do=courses&edit='.$result["id"].'">Modifier</a>', '<a href="?do=courses&del='.$result["id"].'">Supprimer</a>') : array();
+                $logged_in_array = (isLoggedIn()) ? array('<a href="?do=courses&edit='.intval($result["id"]).'">Modifier</a>', '<a href="?do=courses&del='.intval($result["id"]).'">Supprimer</a>') : array();
                 $table[] = array("class"=>($result["bought"] == 1) ? "disabled" : "", "content"=>array_merge(array(htmlspecialchars($result["item"]), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), $date->format("d/m/Y"), $result["bought"] == 1 ? "Oui" : "Non"), $logged_in_array));
             }
 
@@ -1689,7 +1689,7 @@ function renderPage()
                 $now = new DateTime();
                 $interval = $until->diff($now);
 
-                $logged_in_array = (isLoggedIn()) ? array('<a href="?do=emprunts&edit='.$result["id"].'">Modifier</a>', '<a href="?do=emprunts&del='.$result["id"].'">Supprimer</a>') : array();
+                $logged_in_array = (isLoggedIn()) ? array('<a href="?do=emprunts&edit='.intval($result["id"]).'">Modifier</a>', '<a href="?do=emprunts&del='.intval($result["id"]).'">Supprimer</a>') : array();
                 $table[] = array("class"=>(($result["back"] == 1) ? "disabled " : "").(($interval->format("a") <= 1 && $result['back'] == 0) ? "urgent" : ""), "content"=>array_merge(array(htmlspecialchars($result['tool']), htmlspecialchars($result['borrower']), $from->format("d/m/Y"), $until->format("d/m/Y"), (($result["back"] == 1) ? "Oui" : "Non")), $logged_in_array));
             }
             $PAGE->assign("title", "Emprunts");
@@ -1725,19 +1725,20 @@ function renderPage()
             exit;
         }
         elseif(!empty($_GET['edit']) || isset($_GET['add'])) {
-            if(!empty($_POST['amount']) && !empty($_POST['author']) && !empty($_POST['date']) && !empty($_POST['comment'])) {
+            if(!empty($_POST['amount']) && !empty($_POST['author']) && !empty($_POST['date']) && !empty($_POST['comment']) && isset($_POST['budget'])) {
                 if(!empty($_POST['id'])) {
-                    $query = $bdd->prepare("UPDATE budget SET author=:author, amount=:amount, date=:date, comment=:comment WHERE id=:id");
+                    $query = $bdd->prepare("UPDATE budget SET author=:author, amount=:amount, date=:date, comment=:comment, budget=:budget WHERE id=:id");
                     $query->bindValue(":id", intval($_POST['id']));
                 }
                 else {
-                    $query = $bdd->prepare("INSERT INTO budget(id, amount, author, date, comment) VALUES('', :amount, :author, :date, :comment)");
+                    $query = $bdd->prepare("INSERT INTO budget(id, amount, author, date, comment, budget) VALUES('', :amount, :author, :date, :comment, :budget)");
                 }
                 $date = DateTime::createFromFormat('d/m/Y H:i', $_POST['date']);
                 $query->bindValue(":author", $_POST['author']);
                 $query->bindValue(":amount", floatval($_POST['amount']));
                 $query->bindValue(":date", $date->format("Y-m-d H:i:s"));
                 $query->bindValue(":comment", $_POST['comment']);
+                $query->bindValue(":budget", $_POST['budget']);
                 $query->execute();
                 if(!empty($_POST['id'])) {
                     echo '<script language="JavaScript">alert("Ligne de budget modifiée.");document.location=\'?do=budget\';</script>';
@@ -1752,7 +1753,7 @@ function renderPage()
                 $PAGE->assign("title", "Budget");
                 if(!empty($_GET['edit'])) {
                     $PAGE->assign('id', intval($_GET['edit']));
-                    $query = $bdd->prepare("SELECT id, amount, author, date, comment FROM budget WHERE id=:id");
+                    $query = $bdd->prepare("SELECT id, amount, author, date, comment, budget FROM budget WHERE id=:id");
                     $query->bindValue(":id", intval($_GET['edit']));
                     $query->execute();
                     $result = $query->fetch();
@@ -1763,6 +1764,7 @@ function renderPage()
                     $PAGE->assign('author', htmlspecialchars($result["author"]));
                     $PAGE->assign('date', $date->format('d/m/Y H:i'));
                     $PAGE->assign('comment', htmlspecialchars($result["comment"]));
+                    $PAGE->assign('budget', htmlspecialchars($result["budget"]));
                 }
                 $PAGE->renderPage('budget_form');
                 exit;
@@ -1770,11 +1772,10 @@ function renderPage()
         }
         else {
             $PAGE = new pageBuilder;
-            $query = $bdd->query("SELECT id, amount, author, date as date, comment FROM budget ORDER BY date DESC");
+            $query = $bdd->query("SELECT id, amount, author, date as date, comment, budget FROM budget ORDER BY date DESC");
             $results = $query->fetchAll();
 
-            $logged_in_array = (isLoggedIn()) ? array("Modifier", "Supprimer") : array();
-            $table = array(array("title"=>"", "class"=>"", "content"=>array_merge(array("Date", "Commentaire", "Ajouté par", "Crédit", "Débit", "Total"), $logged_in_array)));
+            $table = array();
 
             // Compute total per year
             $total_per_year = array();
@@ -1787,25 +1788,56 @@ function renderPage()
                 $total_per_year[$scholar_year] += floatval($result["amount"]);
             }
 
+            $specific_budgets = array();
+
             $scholar_year = "";
-            $count = 0;
+            $tmp_table = array();
             foreach($results as $result) {
-                $count++;
-                $date = new DateTime($result["date"]);
-                $result_scholar_year = scholar_year($date);
-                $amount = floatval($result['amount']);
-
-                if($result_scholar_year != $scholar_year) {
-                    $total = $total_per_year[$result_scholar_year];
-                    $table[$count - 1]["title"] = $result_scholar_year;
+                if($result['budget'] != '') {
+                    if(!isset($specific_budgets[$result['budget']])) {
+                        $specific_budgets[$result['budget']] = array();
+                    }
+                    $specific_budgets[$result['budget']][] = $result;
+                    continue;
                 }
+                else {
+                    $date = new DateTime($result["date"]);
+                    $result_scholar_year = scholar_year($date);
+                    $amount = floatval($result['amount']);
 
-                $logged_in_array = (isLoggedIn()) ? array('<a href="?do=budget&edit='.$result["id"].'">Modifier</a>', '<a href="?do=budget&del='.$result["id"].'">Supprimer</a>') : array();
-                $table[] = array("title"=> "", "class"=>"", "content"=>array_merge(array($date->format("d/m/Y"), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : "-"), $total." €"), $logged_in_array));
+                    if($result_scholar_year != $scholar_year) {
+                        $total = $total_per_year[$result_scholar_year];
+                        $logged_in_array = (isLoggedIn()) ? array("Modifier", "Supprimer") : array();
+                        $tmp_table[] = array("title"=>$result_scholar_year, "class"=>"", "content"=>array_merge(array("Date", "Commentaire", "Ajouté par", "Crédit", "Débit", "Total"), $logged_in_array));
+                    }
 
-                $scholar_year = $result_scholar_year;
-                $total -= $amount;
+                    $logged_in_array = (isLoggedIn()) ? array('<a href="?do=budget&edit='.intval($result["id"]).'">Modifier</a>', '<a href="?do=budget&del='.intval($result["id"]).'">Supprimer</a>') : array();
+                    $tmp_table[] = array("title"=> "", "class"=>"", "content"=>array_merge(array($date->format("d/m/Y"), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : "-"), $total." €"), $logged_in_array));
+
+                    $scholar_year = $result_scholar_year;
+                    $total -= $amount;
+                }
             }
+
+            $specific_budgets_table = array();
+            ksort($specific_budgets);
+            foreach($specific_budgets as $budget=>$list) {
+                $total = 0;
+                foreach($list as $element) {
+                    $total += floatval($element["amount"]);
+                }
+                $logged_in_array = (isLoggedIn()) ? array("Modifier", "Supprimer") : array();
+                $specific_budgets_table[] = array("title"=>htmlspecialchars($budget), "class"=>"", "content"=>array_merge(array("Date", "Commentaire", "Ajouté par", "Crédit", "Débit", "Total"), $logged_in_array));
+                foreach($list as $element) {
+                    $date = new DateTime($element['date']);
+                    $amount = floatval($element['amount']);
+                    $logged_in_array = (isLoggedIn()) ? array('<a href="?do=budget&edit='.intval($result["id"]).'">Modifier</a>', '<a href="?do=budget&del='.intval($result["id"]).'">Supprimer</a>') : array();
+                    $specific_budgets_table[] = array("title"=>"", "class"=>"", "content"=>array_merge(array($date->format('d/m/Y'), htmlspecialchars($element['comment']), htmlspecialchars($element['author']), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : ""), $total." €"), $logged_in_array));
+                }
+            }
+
+            $table = array_merge($table, $specific_budgets_table);
+            $table = array_merge($table, $tmp_table);
             $PAGE->assign("title", "Budget");
             $PAGE->assign("table", $table);
             $PAGE->assign("do", "budget");

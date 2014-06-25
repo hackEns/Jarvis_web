@@ -14,6 +14,8 @@
         <p><label for="date">Date (DD/MM/YYYY HH:MM) : </label><input type="text" name="date" id="date" {if="!empty($date)"}value="{$date}"{/if}/></p>
         <p><label for="amount">Montant : </label><input type="text" name="amount" id="amount" {if="!empty($amount)"}value="{$amount}"{/if}/></p>
         <p>Montant négatif pour une dépense, montant positif pour un crédit.</p>
+        <p><label for="budget">Budget : </label><input type="text" name="budget" id="budget" {if="!empty($budget)"}value="{$budget}"{/if}/></p>
+        <p>Laisser vide pour mettre la ligne sur le budget annuel.</p>
         <p><label for="comment">Commentaire : </label><textarea name="comment" id="comment">{if="!empty($comment)"}{$comment}{/if}</textarea></p>
         <p>{if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=courses">Retour</a></p>
     </form>
