@@ -163,7 +163,7 @@ form.form-horizontal .form-help {
     display: none;
 }
 
-.nonzero {
+.counter.nonzero {
     display: block;
 }
 
@@ -959,7 +959,8 @@ height: 120px;
 }
 
 .jarvis .disabled {
-    background-color: grey;
+    background-color: #DDD;
+    color: #666;
 }
 
 .jarvis .urgent {
