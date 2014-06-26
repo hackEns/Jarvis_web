@@ -161,9 +161,10 @@ function getModerate()
     $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
     $bdd->query("SET NAMES utf8");
 
-    $query = $bdd->execute('SELECT COUNT(*) as nb FROM moderation WHERE moderated=0');
+    $query = $bdd->query('SELECT COUNT(*) as nb FROM moderation WHERE moderated=0');
     $result = $query->fetch();
-    return "<span class=\"counter\">".intval($result['nb'])."</span>";
+    $class = ($result['nb'] > 0) ? " nonzero" : "";
+    return "<span class=\"counter".$class."\">".intval($result['nb'])."</span>";
 }
 
 // -----------------------------------------------------------------------------------------------
