@@ -153,6 +153,19 @@ function checkUpdate()
 }
 
 
+// Gets the number of messages to moderate
+function getModerate()
+{
+    if(!isLoggedIn()) return '';
+
+    $bdd = new PDO("mysql:host=".$GLOBALS["mysql_host"].";dbname=".$GLOBALS["mysql_db"], $GLOBALS["mysql_login"], $GLOBALS["mysql_pass"]);
+    $bdd->query("SET NAMES utf8");
+
+    $query = $bdd->execute('SELECT COUNT(*) as nb FROM moderation WHERE moderated=0');
+    $result = $query->fetch();
+    return "<span>".intval($result['nb'])."</span>";
+}
+
 // -----------------------------------------------------------------------------------------------
 // Simple cache system (mainly for the RSS/ATOM feeds).
 

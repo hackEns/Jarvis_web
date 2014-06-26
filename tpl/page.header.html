@@ -14,7 +14,7 @@
     <a id="activeTagcloud" href="?do=budget"><i class="glyphicon glyphicon-euro"></i> budget</a>
     <a id="activeTagcloud" href="?do=courses"><i class="glyphicon glyphicon-shopping-cart"></i> courses</a>
     <a id="activeTagcloud" href="?do=emprunts"><i class="glyphicon glyphicon-random"></i> emprunts</a>
-    {if="isLoggedIn()"}<a id="activeTagcloud" href="https://lists.ens.fr/wws/modindex/hackens-membres"><i class="glyphicon glyphicon-envelope"></i> ML</a>{/if}
+    {if="isLoggedIn()"}<a id="activeTagcloud" href="https://lists.ens.fr/wws/modindex/hackens-membres"><i class="glyphicon glyphicon-envelope"></i>{function="getModerate()"} ML</a>{/if}
     <a href="?do=about"><i class="glyphicon glyphicon-info-sign"></i> à propos</a>
     <a href="{$feedurl}?do=rss{$searchcrits}" class="nomobile"><img src="../images/feed-icon-fa.png" alt="rss"> rss</a>
 {if="isLoggedIn()"}
