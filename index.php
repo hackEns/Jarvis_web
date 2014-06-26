@@ -163,7 +163,7 @@ function getModerate()
 
     $query = $bdd->execute('SELECT COUNT(*) as nb FROM moderation WHERE moderated=0');
     $result = $query->fetch();
-    return "<span>".intval($result['nb'])."</span>";
+    return "<span class=\"counter\">".intval($result['nb'])."</span>";
 }
 
 // -----------------------------------------------------------------------------------------------
