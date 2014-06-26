@@ -10,13 +10,49 @@
 <main class="jarvis">
     <h1>{$title}</h1>
     {if="isLoggedIn()"}
-    <form method="post" action="" class="center">
-        <p><label for="item">Item : </label><input type="text" name="item" id="item" {if="!empty($item)"}value="{$item}"{/if}/></p>
-        <p><label for="author">Auteur : </label><input type="text" name="author" id="author" {if="!empty($author)"}value="{$author}"{/if}/></p>
-        <p><label for="date">Date (DD/MM/YYYY HH:MM) : </label><input type="text" name="date" id="date" {if="!empty($date)"}value="{$date}"{/if}/></p>
-        <p><label for="comment">Commentaire : </label><textarea name="comment" id="comment">{if="!empty($comment)"}{$comment}{/if}</textarea></p>
-        <p>Acheté ? <input type="radio" name="bought" id="yes_form" value="1" {if="!empty($bought)"}checked="checked"{/if}/><label for="yes_form">Oui</label> <input type="radio" name="bought" id="no_form" value="0" {if="empty($bought)"}checked="checked"{/if}/><label for="no_form">Non</label></p>
-        <p>{if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=courses">Retour</a></p>
+    <form method="post" action="" class="form-horizontal">
+        <div class="form-item">
+            <label class="left-column" for="item">Item : </label>
+            <div class="right-column">
+                <input type="text" name="item" id="item" {if="!empty($item)"}value="{$item}"{/if}/>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="left-column" for="author">Auteur : </label>
+            <div class="right-column">
+                <input type="text" name="author" id="author" {if="!empty($author)"}value="{$author}"{/if}/>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="left-column" for="date">Date : </label>
+            <div class="right-column">
+                <input type="text" name="date" id="date" {if="!empty($date)"}value="{$date}"{/if}/>
+            </div>
+        </div>
+        <p class="form-help">
+            Doit être au format jj/mm/aaaa hh:mm
+        </p>
+        <div class="form-item">
+            <label class="left-column" for="comment">Commentaire : </label>
+            <div class="right-column">
+                <textarea name="comment" id="comment">{if="!empty($comment)"}{$comment}{/if}</textarea>
+            </div>
+        </div>
+        <div class="form-item">
+            <p class="left-column">
+                Acheté ?
+            </p>
+            <div class="right-column">
+                <input type="radio" name="bought" id="yes_form" value="1" {if="!empty($bought)"}checked="checked"{/if}/>
+                <label for="yes_form">Oui</label>
+                <input type="radio" name="bought" id="no_form" value="0" {if="empty($bought)"}checked="checked"{/if}/>
+                <label for="no_form">Non</label>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="right-column">
+            {if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=courses">Retour</a>
+        </div>
     </form>
     {else}
     <div class="callout-error">

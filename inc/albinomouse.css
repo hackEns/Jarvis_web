@@ -125,8 +125,8 @@ form.form-horizontal .right-column {
     margin: auto;
 }
 
-form.form-horizontal .left-column input ,
-form.form-horizontal .right-column input,
+form.form-horizontal .left-column input[type="text"] ,
+form.form-horizontal .right-column input[type="text"],
 form.form-horizontal .left-column textarea ,
 form.form-horizontal .right-column textarea  {
     width: 75%;
@@ -136,6 +136,11 @@ form.form-horizontal input[type=submit] {
     background-color: #116C8E;
     color: white;
     width: auto;
+    cursor: pointer;
+}
+
+form.form-horizontal input[type=submit]:hover {
+    box-shadow: 0 0 2px 2px rgba(0,0,0,0.1);
 }
 
 form.form-horizontal label {

@@ -10,13 +10,57 @@
 <main class="jarvis">
     <h1>{$title}</h1>
     {if="isLoggedIn()"}
-    <form method="post" action="" class="center">
-        <p><label for="borrower">Emprunteur (pseudo irc ou e-mail) : </label><input type="text" name="borrower" id="borrower" {if="!empty($borrower)"}value="{$borrower}"{/if}/></p>
-        <p><label for="tool">Outil : </label><input type="text" name="tool" id="tool" {if="!empty($tool)"}value="{$tool}"{/if}/></p>
-        <p><label for="date_from">Date de début (DD/MM/YYYY HH:MM) : </label><input type="text" name="date_from" id="date_from" {if="!empty($date_from)"}value="{$date_from}"{/if}/></p>
-        <p><label for="until">Date de fin (DD/MM/YYYY HH:MM) : </label><input type="text" name="until" id="until" {if="!empty($until)"}value="{$until}"{/if}/></p>
-        <p>Rendu ? <input type="radio" name="back" id="yes_form" value="1" {if="!empty($back)"}checked="checked"{/if}/><label for="yes_form">Oui</label> <input type="radio" name="back" id="no_form" value="0" {if="empty($back)"}checked="checked"{/if}/><label for="no_form">Non</label></p>
-        <p>{if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}<input type="submit"/> ou <a href="?do=emprunts">Retour</a></p>
+    <form method="post" action="" class="form-horizontal">
+        <div class="form-item">
+            <label class="left-column" for="borrower">Emprunteur : </label>
+            <div class="right-column">
+                <input type="text" name="borrower" id="borrower" {if="!empty($borrower)"}value="{$borrower}"{/if}/>
+            </div>
+        </div>
+        <p class="form-help">
+            Pseudo irc ou e-mail
+        </p>
+        <div class="form-item">
+            <label class="left-column" for="tool">Outil : </label>
+            <div class="right-column">
+                <input type="text" name="tool" id="tool" {if="!empty($tool)"}value="{$tool}"{/if}/>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="left-column" for="date_from">Date de début : </label>
+            <div class="right-column">
+                <input type="text" name="date_from" id="date_from" {if="!empty($date_from)"}value="{$date_from}"{/if}/>
+            </div>
+        </div>
+        <p class="form-help">
+            Doit être au format jj/mm/aaaa hh:mm
+        </p>
+        <div class="form-item">
+            <label class="left-column" for="until">Date de fin : </label>
+            <div class="right-column">
+                <input type="text" name="until" id="until" {if="!empty($until)"}value="{$until}"{/if}/>
+            </div>
+        </div>
+        <p class="form-help">
+            Doit être au format jj/mm/aaaa hh:mm
+        </p>
+        <div class="form-item">
+            <p class="left-column">
+                Rendu ?
+            </p>
+            <div class="right-column">
+                    <input type="radio" name="back" id="yes_form" value="1" {if="!empty($back)"}checked="checked"{/if}/>
+                    <label for="yes_form">Oui</label>
+                    <input type="radio" name="back" id="no_form" value="0" {if="empty($back)"}checked="checked"{/if}/>
+                    <label for="no_form">Non</label>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="right-column">
+                {if="!empty($id)"}<input type="hidden" name="id" id="id" value="{$id}"/>{/if}
+                <input type="submit"/> ou <a href="?do=emprunts">Retour</a>
+            </div>
+        </div>
     </form>
     {else}
     <div class="callout-error">
