@@ -152,6 +152,21 @@ form.form-horizontal .form-help {
     margin-bottom: 2em;
 }
 
+.counter {
+    background-color: #116C8E;
+    color: white;
+    border-radius: 10px;
+    padding: 0px 7px;
+    margin-right: -5px;
+    margin-left: 3px;
+    float: right;
+    display: none;
+}
+
+.nonzero {
+    display: block;
+}
+
 
 /* Buttons */
 .bigbutton {
@@ -372,7 +387,7 @@ form.form-horizontal .form-help {
     clear: both;
     color: #4C4B4A;
     float: right;
-    margin: -140px 0;
+    margin: -180px 0;
     padding: 5px;
 }
 #headerform a { color:#4C4B4A;}
