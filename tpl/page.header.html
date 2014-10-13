@@ -1,7 +1,7 @@
 
    <div id="menu">
    <div id="logo"><a href = "http://hackens.org"></a></div>
-    <span id="bonjourshaarli" class="nomobile">a déjà partagé {if="!empty($linkcount)"}{$linkcount}{/if} liens !</span>
+    {if="!empty($linkcount)"}<span id="bonjourshaarli" class="nomobile">a déjà partagé {$linkcount} liens !</span>{/if}
     <span id="shaarli_title"><a href="?">{$shaarlititle|htmlspecialchars}</a></span>
 {if="!empty($_GET['source']) && $_GET['source']=='bookmarklet'"}
     <style TYPE="text/css">#pageheader {margin-top:-10px} #menu {height: 100px;} #bonjourshaarli{display:none;}</style>
