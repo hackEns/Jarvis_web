@@ -9,23 +9,23 @@
 {else}
     <a {if="empty($view)"}id="activeLinklist"{/if} href="?" class="nomobile"><i class="glyphicon glyphicon-home"></i> Jarvis</a>
     <a href="http://hackens.org" class="nomobile"><i class="glyphicon glyphicon-star"></i> hackEns</a>
-    <a {if="$view == 'tagcloud'}id="activeLinklist"{/if} href="?do=tagcloud"><i class="glyphicon glyphicon-tags"></i> tags</a>
+    <a {if="$view == 'tagcloud'"}id="activeLinklist"{/if} href="?do=tagcloud"><i class="glyphicon glyphicon-tags"></i> tags</a>
     <!--<a id="activePicwall" href="?do=picwall{$searchcrits}"><i class="glyphicon glyphicon-picture"></i> images</a>-->
-    <a {if="$view == 'budget'}id="activeLinklist"{/if} href="?do=budget"><i class="glyphicon glyphicon-euro"></i> budget</a>
-    <a {if="$view == 'courses'}id="activeLinklist"{/if} href="?do=courses"><i class="glyphicon glyphicon-shopping-cart"></i> courses</a>
-    <a {if="$view == 'emprunts'}id="activeLinklist"{/if} href="?do=emprunts"><i class="glyphicon glyphicon-random"></i> emprunts</a>
+    <a {if="$view == 'budget'"}id="activeLinklist"{/if} href="?do=budget"><i class="glyphicon glyphicon-euro"></i> budget</a>
+    <a {if="$view == 'courses'"}id="activeLinklist"{/if} href="?do=courses"><i class="glyphicon glyphicon-shopping-cart"></i> courses</a>
+    <a {if="$view == 'emprunts'"}id="activeLinklist"{/if} href="?do=emprunts"><i class="glyphicon glyphicon-random"></i> emprunts</a>
     {if="isLoggedIn()"}<a href="https://lists.ens.fr/wws/modindex/hackens-membres">{function="getModerate()"}<i class="glyphicon glyphicon-envelope"></i> ML</a>{/if}
-    <a {if="$view == 'about'}id="activeLinklist"{/if} href="?do=about"><i class="glyphicon glyphicon-info-sign"></i> à propos</a>
+    <a {if="$view == 'about'"}id="activeLinklist"{/if} href="?do=about"><i class="glyphicon glyphicon-info-sign"></i> à propos</a>
     <a href="{$feedurl}?do=rss{$searchcrits}" class="nomobile"><img src="../images/feed-icon-fa.png" alt="rss"> rss</a>
 {if="isLoggedIn()"}
     <style TYPE="text/css">.cachemoi {display:none;}</style>
-    <a {if="$view == 'addlink'}id="activeLinklist"{/if} href="?do=addlink"><i class="glyphicon glyphicon-link"></i>  nouveau lien</a>
-    <a {if="$view == 'tools'}id="activeLinklist"{/if} href="?do=tools"><i class="glyphicon glyphicon-wrench"></i> options</a>
+    <a {if="$view == 'addlink'"}id="activeLinklist"{/if} href="?do=addlink"><i class="glyphicon glyphicon-link"></i>  nouveau lien</a>
+    <a {if="$view == 'tools'"}id="activeLinklist"{/if} href="?do=tools"><i class="glyphicon glyphicon-wrench"></i> options</a>
     <a href="?do=logout"><i class="glyphicon glyphicon-log-out"></i> logout</a>
     {elseif="$GLOBALS['config']['OPEN_SHAARLI']"}
-    <a {if="$view == 'tools'}id="activeLinklist"{/if} href="?do=tools">options</a><a href="?do=addlink"><i class="glyphicon glyphicon-link"></i> nouveau lien</a>
+    <a {if="$view == 'tools'"}id="activeLinklist"{/if} href="?do=tools">options</a><a href="?do=addlink"><i class="glyphicon glyphicon-link"></i> nouveau lien</a>
 {else}
-    <a {if="$view == 'login'}id="activeLinklist"{/if} href="?do=login"><i class="glyphicon glyphicon-log-in"></i> login</a>
+    <a {if="$view == 'login'"}id="activeLinklist"{/if} href="?do=login"><i class="glyphicon glyphicon-log-in"></i> login</a>
 {/if}
 {/if}</div>
     <div class="clear"></div>
