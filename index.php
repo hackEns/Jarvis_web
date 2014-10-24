@@ -1846,13 +1846,15 @@ function renderPage()
                 foreach($list as $element) {
                     $total += floatval($element["amount"]);
                 }
+				$current = $total;
                 $logged_in_array = (isLoggedIn()) ? array("Modifier", "Supprimer") : array();
                 $specific_budgets_table[] = array("title"=>htmlspecialchars($budget), "class"=>"", "content"=>array_merge(array("Date", "Commentaire", "Ajouté par", "Crédit", "Débit", "Total"), $logged_in_array));
                 foreach($list as $element) {
                     $date = new DateTime($element['date']);
                     $amount = floatval($element['amount']);
                     $logged_in_array = (isLoggedIn()) ? array('<a href="?do=budget&edit='.intval($result["id"]).'">Modifier</a>', '<a href="?do=budget&del='.intval($result["id"]).'">Supprimer</a>') : array();
-                    $specific_budgets_table[] = array("title"=>"", "class"=>"", "content"=>array_merge(array($date->format('d/m/Y'), htmlspecialchars($element['comment']), htmlspecialchars($element['author']), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : ""), $total." €"), $logged_in_array));
+                    $specific_budgets_table[] = array("title"=>"", "class"=>"", "content"=>array_merge(array($date->format('d/m/Y'), htmlspecialchars($element['comment']), htmlspecialchars($element['author']), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : ""), $current ." €"), $logged_in_array));
+					$current -= $amount;
                 }
             }
 
