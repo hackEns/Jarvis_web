@@ -1813,30 +1813,16 @@ function renderPage()
             $scholar_year = "";
             $tmp_table = array();
             foreach($results as $result) {
-                if($result['budget'] != '') {
-                    if(!isset($specific_budgets[$result['budget']])) {
-                        $specific_budgets[$result['budget']] = array();
-                    }
-                    $specific_budgets[$result['budget']][] = $result;
-                    continue;
+                if($result['budget'] == '') {
+                    $budget = scholar_year(new DateTime($result['date']));
                 }
                 else {
-                    $date = new DateTime($result["date"]);
-                    $result_scholar_year = scholar_year($date);
-                    $amount = floatval($result['amount']);
-
-                    if($result_scholar_year != $scholar_year) {
-                        $total = $total_per_year[$result_scholar_year];
-                        $logged_in_array = (isLoggedIn()) ? array("Modifier", "Supprimer") : array();
-                        $tmp_table[] = array("title"=>$result_scholar_year, "class"=>"", "content"=>array_merge(array("Date", "Commentaire", "Ajouté par", "Crédit", "Débit", "Total"), $logged_in_array));
-                    }
-
-                    $logged_in_array = (isLoggedIn()) ? array('<a href="?do=budget&edit='.intval($result["id"]).'">Modifier</a>', '<a href="?do=budget&del='.intval($result["id"]).'">Supprimer</a>') : array();
-                    $tmp_table[] = array("title"=> "", "class"=>"", "content"=>array_merge(array($date->format("d/m/Y"), htmlspecialchars($result["comment"]), htmlspecialchars($result["author"]), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : "-"), $total." €"), $logged_in_array));
-
-                    $scholar_year = $result_scholar_year;
-                    $total -= $amount;
+                    $budget = $result['budget'];
                 }
+                if(!isset($specific_budgets[$budget])) {
+                    $specific_budgets[$budget] = array();
+                }
+                $specific_budgets[$budget][] = $result;
             }
 
             $specific_budgets_table = array();
