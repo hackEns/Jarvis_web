@@ -1727,7 +1727,7 @@ function renderPage()
             /* Returns the scholar year associated with date $date.*/
             $Y = $date->format('Y');
             if($date->format('m') > 8) {
-                $year = $Y." / ".($Y - 1);
+                $year = $Y." / ".($Y + 1);
             }
             else {
                 $year = ($Y - 1)." / ".$Y;
@@ -1838,7 +1838,7 @@ function renderPage()
                 foreach($list as $element) {
                     $date = new DateTime($element['date']);
                     $amount = floatval($element['amount']);
-                    $logged_in_array = (isLoggedIn()) ? array('<a href="?do=budget&edit='.intval($result["id"]).'">Modifier</a>', '<a href="?do=budget&del='.intval($result["id"]).'">Supprimer</a>') : array();
+                    $logged_in_array = (isLoggedIn()) ? array('<a href="?do=budget&edit='.intval($element["id"]).'">Modifier</a>', '<a href="?do=budget&del='.intval($element["id"]).'">Supprimer</a>') : array();
                     $specific_budgets_table[] = array("title"=>"", "class"=>"", "content"=>array_merge(array($date->format('d/m/Y'), htmlspecialchars($element['comment']), htmlspecialchars($element['author']), (($amount > 0) ? $amount." €" : "-"), (($amount < 0) ? -$amount." €" : ""), $current ." €"), $logged_in_array));
 					$current -= $amount;
                 }
