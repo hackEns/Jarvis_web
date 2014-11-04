@@ -1571,7 +1571,7 @@ function renderPage()
             exit;
         }
         elseif((!empty($_GET['edit']) || isset($_GET['add'])) && isLoggedIn()) {
-            if(!empty($_POST['item']) && !empty($_POST['author']) && !empty($_POST['comment']) && !empty($_POST['date']) && isset($_POST['bought'])) {
+            if(!empty($_POST['item']) && !empty($_POST['author']) && !empty($_POST['date']) && isset($_POST['bought'])) {
                 if(!empty($_POST['id'])) {
                     $query = $bdd->prepare("UPDATE shopping SET author=:author, item=:item, date=:date, comment=:comment, bought=:bought WHERE id=:id");
                     $query->bindValue(":id", intval($_POST['id']));
