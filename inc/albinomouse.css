@@ -261,6 +261,11 @@ form.form-horizontal .form-help {
     margin:10px 3px 3px 3px;
     color:#cecece;
 }
+.searchform {
+    position: absolute;
+    right: 0;
+    top: -45px;
+}
 
 .linksperpage {
     background-color: #FFFFFF;                            /*AM*/
@@ -384,11 +389,11 @@ form.form-horizontal .form-help {
     margin-top:5px;
 }
 #headerform {                                  /*AM champs de recherche*/
-    clear: both;
     color: #4C4B4A;
-    float: right;
-    margin: -180px 0;
+    top: 100px;
     padding: 5px;
+    position: absolute;
+    width: 980px;
 }
 #headerform a { color:#4C4B4A;}
 

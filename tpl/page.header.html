@@ -8,7 +8,7 @@
 	{ignore} When called as a popup from bookmarklet, do not display menu. {/ignore}
 {else}
     <a {if="empty($view)"}id="activeLinklist"{/if} href="?" class="nomobile"><i class="glyphicon glyphicon-home"></i> Jarvis</a>
-    <a href="http://hackens.org" class="nomobile"><i class="glyphicon glyphicon-star"></i> hackEns</a>
+    <!--<a href="http://hackens.org" class="nomobile"><i class="glyphicon glyphicon-star"></i> hackEns</a>-->
     <a {if="$view == 'tagcloud'"}id="activeLinklist"{/if} href="?do=tagcloud"><i class="glyphicon glyphicon-tags"></i> tags</a>
     <!--<a id="activePicwall" href="?do=picwall{$searchcrits}"><i class="glyphicon glyphicon-picture"></i> images</a>-->
     <a {if="$view == 'budget'"}id="activeLinklist"{/if} href="?do=budget"><i class="glyphicon glyphicon-euro"></i> budget</a>
