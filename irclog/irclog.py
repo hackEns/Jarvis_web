@@ -5,7 +5,8 @@ import os
 import re
 import sys
 
-from bottle import app, run, route, static_file
+from bottle import app, run, route, static_file, SimpleTemplate
+from codecs import open
 
 nb_colors = 37
 
@@ -75,10 +76,10 @@ def format_msg(msg):
 def get_log():
     m = []
     try:
-        with open(logfile, 'r') as f:
+        with open(logfile, 'r', encoding='utf-8') as f:
             for l in f.readlines():
                 m.append(msg.search(l))
-    except FileNotFoundError:
+    except IOError:
         pass
     return m
 
@@ -91,7 +92,7 @@ def write_log(logs_matchs):
                               int(m.group(1)),
                               int(m.group(4)),
                               int(m.group(5)))
-        timestamp = t.timestamp()
+        timestamp = int(t.strftime("%s"))
         write_output += '<tr><td>%s</td><td>&lt;%s&gt;</td><td>%s</td></tr>' % (format_time(t), colorize(m.group(6)), format_msg(m.group(7)))
         write_output += "\n"
     return write_output
@@ -107,11 +108,12 @@ def from_to(get_from, get_to):
                               int(m.group(1)),
                               int(m.group(4)),
                               int(m.group(5)))
-        if t.timestamp() > get_from and t.timestamp() < get_to:
+        if int(t.strftime("%s")) > get_from and int(t.strftime("%s")) < get_to:
             matching_log.append(m)
     now = datetime.datetime.fromtimestamp((get_from + get_to) / 2)
     midnight = now.replace(hour=0, minute=0, second=0,
-                           microsecond=0).timestamp()
+                           microsecond=0)
+    midnight = int(midnight.strftime("%s"))
     start_time_yesterday = midnight - 86400
     end_time_yesterday = midnight - 1
     start_time_tomorrow = midnight + 86400
@@ -129,7 +131,8 @@ def all():
     parsed_log = get_log()
     now = datetime.datetime.now()
     midnight = now.replace(hour=0, minute=0, second=0,
-                           microsecond=0).timestamp()
+                           microsecond=0)
+    midnight = int(midnight.strftime("%s"))
     start_time_yesterday = midnight - 86400
     end_time_yesterday = midnight - 1
     start_time_tomorrow = midnight + 86400
@@ -146,7 +149,8 @@ def all():
 def index():
     now = datetime.datetime.now()
     midnight = now.replace(hour=0, minute=0, second=0,
-                           microsecond=0).timestamp()
+                           microsecond=0)
+    midnight = int(midnight.strftime("%s"))
     return from_to(midnight, midnight + 86400 - 1)
 
 
@@ -156,4 +160,5 @@ def callback():
 
 
 if __name__ == "__main__":
-    run(host="0.0.0.0", port=8081)
+    SimpleTemplate.defaults["basepath"] = "/irc"
+    run(host="127.0.0.1", port=8081)
