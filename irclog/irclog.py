@@ -101,7 +101,7 @@ def write_log(logs_matchs):
 def from_to(get_from, get_to):
     parsed_log = get_log()
     matching_log = []
-    for m in parsed_log:
+    for m in [i for i in parsed_log if i is not None]:
         t = datetime.datetime(int(m.group(3)),
                               int(m.group(2)),
                               int(m.group(1)),
