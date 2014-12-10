@@ -2,3 +2,6 @@ data/*
 tmp/*
 cache/*
 pagecache
+irclog/__pycache__
+irclog/.htpasswd
+irclog/.htaccess
