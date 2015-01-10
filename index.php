@@ -1757,7 +1757,7 @@ function renderPage()
                     $query->bindValue(":id", intval($_POST['id']));
                 }
                 else {
-                    $query = $bdd->prepare("INSERT INTO budget(id, amount, author, date, comment, budget) VALUES('', :amount, :author, :date, :comment, :budget)");
+                    $query = $bdd->prepare("INSERT INTO budget(amount, author, date, comment, budget) VALUES(:amount, :author, :date, :comment, :budget)");
                 }
                 $date = DateTime::createFromFormat('d/m/Y', $_POST['date']);
                 $query->bindValue(":author", $_POST['author']);
